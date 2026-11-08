@@ -75,7 +75,7 @@ export default function HowToPlay() {
       </h2>
       <ul className="space-y-2 text-xs text-emerald-100 list-disc list-inside mb-8 font-medium">
         <li><strong>Daily Matchday:</strong> Everyone around the globe receives the same mystery footballer each UTC calendar day.</li>
-        <li><strong>Unlimited Training Mode:</strong> Practice anytime with endless random fixtures to sharpen your football IQ.</li>
+        <li><strong>6 Substitution Attempts:</strong> Use demographic clues from each guess to deduce the player.</li>
         <li><strong>Autocomplete Search:</strong> Quick lookups with club, league, age, and position tags. Diacritics are auto-normalized (e.g. <em>Modrić</em> = <em>modric</em>).</li>
         <li><strong>No Repeats:</strong> Prevents accidentally re-submitting players you already tried.</li>
       </ul>

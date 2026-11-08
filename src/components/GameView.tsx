@@ -7,13 +7,11 @@ import { WordleGrid } from '@/components/WordleGrid';
 import { ResultsModal } from '@/components/ResultsModal';
 import { Footballer, GuessComparison } from '@/types/footballer';
 import { getUtcTodayDateString } from '@/lib/game-logic';
-import { HelpCircle, Calendar, BarChart3, Flag, Trophy, AlertCircle } from 'lucide-react';
+import { HelpCircle, Flag, Trophy, AlertCircle } from 'lucide-react';
 
 export default function GameView() {
-  const [mode, setMode] = useState<'daily' | 'practice'>('daily');
   const [currentDateStr, setCurrentDateStr] = useState<string>('');
   const [cluesRevealed, setCluesRevealed] = useState<number>(1);
-  const [cluesData, setCluesData] = useState<any>({});
   const [comparisons, setComparisons] = useState<GuessComparison[]>([]);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [isWon, setIsWon] = useState<boolean>(false);
@@ -21,7 +19,6 @@ export default function GameView() {
   const [mysteryPlayer, setMysteryPlayer] = useState<Footballer | undefined>();
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [showResultsModal, setShowResultsModal] = useState<boolean>(false);
-  const [practicePlayerId, setPracticePlayerId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isShaking, setIsShaking] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<string>('08:42:12');
@@ -51,73 +48,44 @@ export default function GameView() {
       body: JSON.stringify({ dailyVisitors: 1 }),
     }).catch(() => {});
 
-    loadGameState('daily', today);
+    loadGameState(today);
   }, []);
 
-  const loadGameState = async (targetMode: 'daily' | 'practice', date: string, customPracticeId?: string) => {
+  const loadGameState = async (date: string) => {
     setLoading(true);
     setFeedbackMessage(null);
 
-    if (targetMode === 'daily') {
-      const storageKey = `footle_pitch_${date}`;
-      const saved = localStorage.getItem(storageKey);
+    const storageKey = `footle_pitch_${date}`;
+    const saved = localStorage.getItem(storageKey);
 
-      let savedClues = 1;
-      let savedComparisons: GuessComparison[] = [];
-      let savedOver = false;
-      let savedWon = false;
-      let savedScore = 0;
-      let savedMystery: Footballer | undefined = undefined;
+    let savedClues = 1;
+    let savedComparisons: GuessComparison[] = [];
+    let savedOver = false;
+    let savedWon = false;
+    let savedScore = 0;
+    let savedMystery: Footballer | undefined = undefined;
 
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          savedClues = parsed.cluesRevealed || 1;
-          savedComparisons = parsed.comparisons || [];
-          savedOver = parsed.isGameOver || false;
-          savedWon = parsed.isWon || false;
-          savedScore = parsed.score || 0;
-          savedMystery = parsed.mysteryPlayer;
-        } catch {}
-      }
-
-      setCluesRevealed(savedClues);
-      setComparisons(savedComparisons);
-      setIsGameOver(savedOver);
-      setIsWon(savedWon);
-      setFinalScore(savedScore);
-      setMysteryPlayer(savedMystery);
-
+    if (saved) {
       try {
-        const res = await fetch(`/api/daily?date=${date}&clues=${savedClues}`);
-        const data = await res.json();
-        if (data.clues) setCluesData(data.clues);
-      } catch (err) {
-        console.error('Failed to fetch daily clues:', err);
-      }
+        const parsed = JSON.parse(saved);
+        savedClues = parsed.cluesRevealed || 1;
+        savedComparisons = parsed.comparisons || [];
+        savedOver = parsed.isGameOver || false;
+        savedWon = parsed.isWon || false;
+        savedScore = parsed.score || 0;
+        savedMystery = parsed.mysteryPlayer;
+      } catch {}
+    }
 
-      if (savedOver && savedMystery) {
-        setShowResultsModal(true);
-      }
-    } else {
-      setComparisons([]);
-      setIsGameOver(false);
-      setIsWon(false);
-      setFinalScore(0);
-      setMysteryPlayer(undefined);
-      setCluesRevealed(1);
+    setCluesRevealed(savedClues);
+    setComparisons(savedComparisons);
+    setIsGameOver(savedOver);
+    setIsWon(savedWon);
+    setFinalScore(savedScore);
+    setMysteryPlayer(savedMystery);
 
-      try {
-        const url = customPracticeId
-          ? `/api/practice?id=${customPracticeId}&clues=1`
-          : '/api/practice?clues=1';
-        const res = await fetch(url);
-        const data = await res.json();
-        setPracticePlayerId(data.practiceId);
-        setCluesData(data.clues);
-      } catch (err) {
-        console.error('Failed to start practice:', err);
-      }
+    if (savedOver && savedMystery) {
+      setShowResultsModal(true);
     }
 
     setLoading(false);
@@ -131,64 +99,26 @@ export default function GameView() {
     score: number,
     mystery?: Footballer
   ) => {
-    if (mode === 'daily') {
-      const storageKey = `footle_pitch_${currentDateStr}`;
-      localStorage.setItem(
-        storageKey,
-        JSON.stringify({
-          cluesRevealed: clues,
-          comparisons: comps,
-          isGameOver: over,
-          isWon: won,
-          score,
-          mysteryPlayer: mystery,
-        })
-      );
-    }
-  };
-
-  const handleModeChange = (newMode: 'daily' | 'practice') => {
-    setMode(newMode);
-    loadGameState(newMode, currentDateStr);
-  };
-
-  const handleRevealNextClue = async () => {
-    if (cluesRevealed >= 6 || isGameOver) return;
-    const nextIndex = cluesRevealed + 1;
-    setCluesRevealed(nextIndex);
-
-    fetch('/api/analytics', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ totalCluesRevealed: 1 }),
-    }).catch(() => {});
-
-    try {
-      const endpoint = mode === 'daily'
-        ? `/api/daily?date=${currentDateStr}&clues=${nextIndex}`
-        : `/api/practice?id=${practicePlayerId}&clues=${nextIndex}`;
-      const res = await fetch(endpoint);
-      const data = await res.json();
-      setCluesData(data.clues);
-
-      if (mode === 'daily') {
-        persistDailyState(nextIndex, comparisons, isGameOver, isWon, finalScore, mysteryPlayer);
-      }
-    } catch (err) {
-      console.error('Failed to reveal clue:', err);
-    }
+    const storageKey = `footle_pitch_${currentDateStr}`;
+    localStorage.setItem(
+      storageKey,
+      JSON.stringify({
+        cluesRevealed: clues,
+        comparisons: comps,
+        isGameOver: over,
+        isWon: won,
+        score,
+        mysteryPlayer: mystery,
+      })
+    );
   };
 
   const handleGiveUp = async () => {
     if (isGameOver) return;
     try {
-      const endpoint = mode === 'daily' ? '/api/daily' : '/api/practice';
-      const body =
-        mode === 'daily'
-          ? { date: currentDateStr, giveUp: true, cluesUsed: comparisons.length || 6 }
-          : { playerId: practicePlayerId, giveUp: true, cluesUsed: comparisons.length || 6 };
+      const body = { date: currentDateStr, giveUp: true, cluesUsed: comparisons.length || 6 };
 
-      const res = await fetch(endpoint, {
+      const res = await fetch('/api/daily', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -202,9 +132,7 @@ export default function GameView() {
       setShowResultsModal(true);
       setFeedbackMessage(data.message);
 
-      if (mode === 'daily') {
-        persistDailyState(cluesRevealed, comparisons, true, false, 0, data.mysteryPlayer);
-      }
+      persistDailyState(cluesRevealed, comparisons, true, false, 0, data.mysteryPlayer);
     } catch (err) {
       console.error('Failed to surrender match:', err);
     }
@@ -222,23 +150,14 @@ export default function GameView() {
 
     try {
       const attemptsCount = comparisons.length + 1;
-      const endpoint = mode === 'daily' ? '/api/daily' : '/api/practice';
-      const body =
-        mode === 'daily'
-          ? {
-              date: currentDateStr,
-              guess: selected.displayName,
-              guessedPlayerId: selected.id,
-              cluesUsed: attemptsCount,
-            }
-          : {
-              playerId: practicePlayerId,
-              guess: selected.displayName,
-              guessedPlayerId: selected.id,
-              cluesUsed: attemptsCount,
-            };
+      const body = {
+        date: currentDateStr,
+        guess: selected.displayName,
+        guessedPlayerId: selected.id,
+        cluesUsed: attemptsCount,
+      };
 
-      const res = await fetch(endpoint, {
+      const res = await fetch('/api/daily', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -257,9 +176,7 @@ export default function GameView() {
           setShowResultsModal(true);
           setFeedbackMessage(data.message);
 
-          if (mode === 'daily') {
-            persistDailyState(cluesRevealed, nextComparisons, true, true, data.score, data.mysteryPlayer);
-          }
+          persistDailyState(cluesRevealed, nextComparisons, true, true, data.score, data.mysteryPlayer);
 
           fetch('/api/analytics', {
             method: 'POST',
@@ -267,8 +184,7 @@ export default function GameView() {
             body: JSON.stringify({
               gamesCompleted: 1,
               totalScore: data.score,
-              dailyCount: mode === 'daily' ? 1 : 0,
-              practiceCount: mode === 'practice' ? 1 : 0,
+              dailyCount: 1,
             }),
           }).catch(() => {});
         } else {
@@ -279,9 +195,7 @@ export default function GameView() {
             setIsShaking(true);
             setTimeout(() => setIsShaking(false), 350);
 
-            if (mode === 'daily') {
-              persistDailyState(cluesRevealed, nextComparisons, false, false, 0);
-            }
+            persistDailyState(cluesRevealed, nextComparisons, false, false, 0);
           }
         }
       }
@@ -313,13 +227,6 @@ export default function GameView() {
             >
               <HelpCircle className="w-5 h-5 stroke-[2.5]" />
             </Link>
-
-            <button
-              onClick={() => handleModeChange(mode === 'daily' ? 'practice' : 'daily')}
-              className="px-3 py-1.5 rounded-lg border-2 border-emerald-400 bg-[#144f2c] text-xs font-mono font-black text-white hover:bg-emerald-600 transition-colors shadow-sm"
-            >
-              {mode === 'daily' ? 'Daily' : 'Practice'}
-            </button>
           </div>
 
           {/* Center Wordle Title with Chalk Aesthetic */}
@@ -328,7 +235,7 @@ export default function GameView() {
               FOOTY<span className="text-emerald-300 font-black border-b-4 border-emerald-400 pb-0.5">DLE</span>
             </h1>
             <span className="font-mono text-xs text-emerald-100 tracking-widest uppercase font-extrabold drop-shadow">
-              {mode === 'daily' ? `Matchday • ${currentDateStr}` : 'Training Matchday'}
+              Daily Matchday • {currentDateStr}
             </span>
           </div>
 
@@ -405,7 +312,7 @@ export default function GameView() {
         <div className="max-w-[760px] mx-auto px-4 flex items-center justify-between text-xs text-emerald-100 font-mono font-bold">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-            <span className="text-white font-extrabold tracking-wide">FOOTYDLE • PITCH VERIFIED</span>
+            <span className="text-white font-extrabold tracking-wide">FOOTYDLE • DAILY FIXTURE</span>
           </div>
           <span>
             Next mystery fixture in <strong className="text-yellow-300 tracking-widest font-black text-sm">{countdown}</strong>
@@ -422,9 +329,7 @@ export default function GameView() {
           score={finalScore}
           cluesUsed={comparisons.length}
           isWon={isWon}
-          gameMode={mode}
           dateStr={currentDateStr}
-          onPlayAgainPractice={() => loadGameState('practice', currentDateStr)}
         />
       )}
     </div>

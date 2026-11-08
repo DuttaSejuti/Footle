@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Share2, Check, RotateCcw, ExternalLink } from 'lucide-react';
+import { Share2, Check, ExternalLink } from 'lucide-react';
 import { Footballer } from '@/types/footballer';
 import confetti from 'canvas-confetti';
 
@@ -12,8 +12,6 @@ interface ResultsModalProps {
   score: number;
   cluesUsed: number;
   isWon: boolean;
-  gameMode: 'daily' | 'practice';
-  onPlayAgainPractice?: () => void;
   dateStr?: string;
 }
 
@@ -24,8 +22,6 @@ export function ResultsModal({
   score,
   cluesUsed,
   isWon,
-  gameMode,
-  onPlayAgainPractice,
   dateStr,
 }: ResultsModalProps) {
   const [copied, setCopied] = useState(false);
@@ -33,7 +29,6 @@ export function ResultsModal({
   // Trigger celebration confetti EXACTLY ONCE or TWICE (not looping)
   useEffect(() => {
     if (isOpen && isWon && typeof window !== 'undefined') {
-      // Burst 1: immediate football turf celebration
       confetti({
         particleCount: 50,
         spread: 60,
@@ -41,7 +36,6 @@ export function ResultsModal({
         colors: ['#16a34a', '#eab308', '#ffffff'],
       });
 
-      // Burst 2: second subtle celebratory volley 300ms later, then stop completely
       const timer = setTimeout(() => {
         confetti({
           particleCount: 40,
@@ -66,11 +60,7 @@ export function ResultsModal({
       })
       .join('');
 
-    const title =
-      gameMode === 'daily'
-        ? `FOOTYDLE Daily (#${dateStr})`
-        : `FOOTYDLE (Training Match)`;
-    return `${title}\nScore: ${score}/6 ⚽\nAttempts: ${cluesUsed}/6\n${squares}\nPlay at: https://whosthefootballer.app`;
+    return `FOOTYDLE Daily (#${dateStr})\nScore: ${score}/6 ⚽\nAttempts: ${cluesUsed}/6\n${squares}\nPlay at: https://whosthefootballer.app`;
   };
 
   const handleShare = async () => {
@@ -103,9 +93,8 @@ export function ResultsModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn">
       <div className="relative w-full max-w-md bg-[#0a2615] border-2 border-emerald-400/80 rounded-2xl p-6 shadow-2xl text-center">
-        {/* Football Celebration Badge with Goal Kick Animation */}
+        {/* Football Celebration Badge */}
         <div className="relative mx-auto w-20 h-20 flex items-center justify-center mb-3">
-          {/* Subtle goal net ripple ring */}
           <div className="absolute inset-0 rounded-full border-2 border-emerald-400/40 animate-net-ripple" />
           <div className="w-16 h-16 rounded-full bg-[#144f2c] border-2 border-emerald-300 flex items-center justify-center shadow-lg animate-goal-kick">
             <span className="text-3xl select-none">{isWon ? '⚽' : '🧤'}</span>
@@ -201,19 +190,6 @@ export function ResultsModal({
               </>
             )}
           </button>
-
-          {gameMode === 'practice' && onPlayAgainPractice && (
-            <button
-              onClick={() => {
-                onPlayAgainPractice();
-                onClose();
-              }}
-              className="w-full py-3 px-4 bg-[#144f2c] hover:bg-[#1a633a] rounded-xl text-white font-black text-xs flex items-center justify-center gap-2 border-2 border-emerald-400/80 transition-colors pressable"
-            >
-              <RotateCcw className="w-4 h-4 text-emerald-300 stroke-[2.5]" />
-              New Training Fixture
-            </button>
-          )}
 
           <button
             onClick={onClose}
