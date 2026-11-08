@@ -55,9 +55,9 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
                 </div>
               </div>
 
-              {/* NAT */}
+              {/* COUNTRY */}
               <div
-                className={`col-span-1 rounded p-1 flex flex-col items-center justify-center text-center tactic-tile border-2 ${
+                className={`col-span-1 rounded p-1 flex items-center justify-center text-center tactic-tile border-2 ${
                   comp.nationality.status === 'correct'
                     ? 'bg-[#15803d] border-emerald-400 text-white'
                     : comp.nationality.status === 'partial'
@@ -65,19 +65,12 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
                     : 'bg-[#0f1f15] border-[#294a34] text-slate-300'
                 }`}
               >
-                <span className="text-xl sm:text-2xl leading-none">{comp.nationality.flag}</span>
-                <span
-                  className={`font-mono text-xs sm:text-sm font-black truncate max-w-full mt-1 ${
-                    comp.nationality.status === 'partial' ? 'text-zinc-950' : 'text-white'
-                  }`}
-                >
-                  {comp.nationality.code}
-                </span>
+                <span className="text-2xl sm:text-3xl leading-none select-none">{comp.nationality.flag}</span>
               </div>
 
               {/* LEAGUE */}
               <div
-                className={`col-span-1 rounded p-1 flex flex-col items-center justify-center text-center tactic-tile border-2 ${
+                className={`col-span-1 rounded p-1.5 flex items-center justify-center text-center tactic-tile border-2 ${
                   comp.league.status === 'correct'
                     ? 'bg-[#15803d] border-emerald-400 text-white'
                     : comp.league.status === 'partial'
@@ -86,7 +79,8 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
                 }`}
               >
                 <span
-                  className={`font-mono text-xs sm:text-sm font-black leading-tight truncate max-w-full ${
+                  title={comp.league.value}
+                  className={`font-mono text-[11px] sm:text-xs font-black leading-tight break-words line-clamp-2 max-w-full ${
                     comp.league.status === 'partial' ? 'text-zinc-950' : 'text-white'
                   }`}
                 >
