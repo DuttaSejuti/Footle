@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { WordleSearch, PlayerOption } from '@/components/WordleSearch';
 import { WordleGrid } from '@/components/WordleGrid';
-import { ScoutDrawer } from '@/components/ScoutDrawer';
 import { ResultsModal } from '@/components/ResultsModal';
 import { Footballer, GuessComparison } from '@/types/footballer';
 import { getUtcTodayDateString } from '@/lib/game-logic';
@@ -357,15 +356,7 @@ export default function GameView() {
       </header>
 
       {/* Central Pitch Wordle Board */}
-      <main className="w-full max-w-[760px] mx-auto px-4 py-5 flex-1 flex flex-col justify-start gap-4 z-10">
-        {/* Pitch Scouting Drawer / Hint bar */}
-        <ScoutDrawer
-          clues={cluesData}
-          cluesRevealed={cluesRevealed}
-          onRevealNext={handleRevealNextClue}
-          isGameOver={isGameOver}
-        />
-
+      <main className="w-full max-w-[760px] mx-auto px-4 py-6 flex-1 flex flex-col justify-start gap-4 z-10">
         {/* Dugout Search & Input Area */}
         <div className={`w-full ${isShaking ? 'animate-shake' : ''}`}>
           <WordleSearch

@@ -1,98 +1,91 @@
 import Link from 'next/link';
-import { ArrowLeft, Globe, UserCheck, Shield, History, Trophy, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Check, HelpCircle } from 'lucide-react';
 
 export const metadata = {
-  title: "How to Play — Who's the Footballer?",
-  description: "Learn how to play Who's the Footballer, scoring rules, and clue reveals.",
+  title: "How to Play — FOOTYDLE",
+  description: "Learn how to play FOOTYDLE: matchday rules, tile feedback, and clues.",
 };
 
 export default function HowToPlay() {
   return (
-    <main className="min-h-screen px-4 py-8 max-w-lg mx-auto text-white">
+    <main className="min-h-screen px-4 py-8 max-w-lg mx-auto text-white pitch-bg">
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-emerald-400 mb-6 transition-colors font-medium"
+        className="inline-flex items-center gap-2 text-xs font-black text-emerald-200 hover:text-white mb-6 transition-colors bg-[#0e331c] px-3 py-1.5 rounded-lg border-2 border-emerald-400"
       >
-        <ArrowLeft className="w-4 h-4" /> Back to Game
+        <ArrowLeft className="w-4 h-4 stroke-[3]" /> Back to Matchday
       </Link>
 
       <div className="flex items-center gap-2 mb-2">
         <span className="text-3xl">⚽</span>
-        <h1 className="text-2xl font-black">How to Play</h1>
+        <h1 className="text-3xl font-headline font-black uppercase tracking-wide">How to Play</h1>
       </div>
 
-      <p className="text-slate-300 text-sm leading-relaxed mb-6">
-        <strong>Who&apos;s the Footballer?</strong> is a daily football trivia game. You have 6 progressive clues to deduce the mystery footballer. The fewer clues you use, the higher your score!
+      <p className="text-emerald-100 text-sm leading-relaxed mb-6 font-medium">
+        <strong>FOOTYDLE</strong> is a daily football player guessing game inspired by Wordle and Poeltl. You have <strong>6 substitution attempts</strong> to identify the mystery footballer.
       </p>
 
-      {/* Progressive Clues Breakdown */}
-      <h2 className="text-lg font-bold text-emerald-400 mb-3">The 6 Clues</h2>
+      {/* Wordle Tile Matching Rules */}
+      <h2 className="text-lg font-black text-emerald-300 uppercase tracking-wider mb-3">
+        Matchday Tile Indicators
+      </h2>
+
       <div className="space-y-3 mb-8">
-        <div className="p-3 bg-[#121e28] border border-[#1e3345] rounded-xl flex items-start gap-3">
-          <Globe className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+        <div className="p-3 bg-[#0e331c] border-2 border-emerald-400 rounded-xl flex items-start gap-3">
+          <div className="w-8 h-8 rounded bg-[#15803d] border-2 border-emerald-400 flex items-center justify-center font-bold text-white shrink-0">
+            🟩
+          </div>
           <div>
-            <span className="text-sm font-bold text-white block">Clue 1: Nationality & Flag (6 Pts)</span>
-            <p className="text-xs text-slate-400">The country the player represents internationally.</p>
+            <span className="text-sm font-black text-white block">Exact Match (Green)</span>
+            <p className="text-xs text-emerald-100">
+              The player attribute (Nationality, League, Club, Position, or Age) is an exact match for the mystery footballer.
+            </p>
           </div>
         </div>
 
-        <div className="p-3 bg-[#121e28] border border-[#1e3345] rounded-xl flex items-start gap-3">
-          <UserCheck className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+        <div className="p-3 bg-[#0e331c] border-2 border-yellow-400 rounded-xl flex items-start gap-3">
+          <div className="w-8 h-8 rounded bg-[#eab308] border-2 border-yellow-300 flex items-center justify-center font-bold text-zinc-950 shrink-0">
+            🟨
+          </div>
           <div>
-            <span className="text-sm font-bold text-white block">Clue 2: Position (5 Pts)</span>
-            <p className="text-xs text-slate-400">Goalkeeper, Defender, Midfielder, or Forward.</p>
+            <span className="text-sm font-black text-white block">Close / Direction (Yellow)</span>
+            <p className="text-xs text-emerald-100">
+              For <strong>Position</strong>: tactical role is adjacent (e.g. Midfielder vs Forward).<br />
+              For <strong>Age</strong>: indicates whether the mystery footballer is older (⬆️) or younger (⬇️).
+            </p>
           </div>
         </div>
 
-        <div className="p-3 bg-[#121e28] border border-[#1e3345] rounded-xl flex items-start gap-3">
-          <Shield className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-          <div>
-            <span className="text-sm font-bold text-white block">Clue 3: Current / Last Club (4 Pts)</span>
-            <p className="text-xs text-slate-400">Current club, or most recent club for retired legends.</p>
+        <div className="p-3 bg-[#0e331c] border-2 border-[#294a34] rounded-xl flex items-start gap-3">
+          <div className="w-8 h-8 rounded bg-[#0f1f15] border-2 border-[#294a34] flex items-center justify-center font-bold text-slate-300 shrink-0">
+            ⬛
           </div>
-        </div>
-
-        <div className="p-3 bg-[#121e28] border border-[#1e3345] rounded-xl flex items-start gap-3">
-          <History className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
           <div>
-            <span className="text-sm font-bold text-white block">Clue 4: Career History (3 Pts)</span>
-            <p className="text-xs text-slate-400">Key previous clubs in chronological order.</p>
-          </div>
-        </div>
-
-        <div className="p-3 bg-[#121e28] border border-[#1e3345] rounded-xl flex items-start gap-3">
-          <Trophy className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-          <div>
-            <span className="text-sm font-bold text-white block">Clue 5: Major Honours (2 Pts)</span>
-            <p className="text-xs text-slate-400">Trophies, Ballon d&apos;Or, Golden Boots, and milestones.</p>
-          </div>
-        </div>
-
-        <div className="p-3 bg-[#121e28] border border-[#1e3345] rounded-xl flex items-start gap-3">
-          <ImageIcon className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-          <div>
-            <span className="text-sm font-bold text-white block">Clue 6: Photo Silhouette (1 Pt)</span>
-            <p className="text-xs text-slate-400">Progressive blur reveal of the player.</p>
+            <span className="text-sm font-black text-white block">Incorrect (Dark Grey)</span>
+            <p className="text-xs text-emerald-100">
+              No overlap with the mystery footballer for that attribute.
+            </p>
           </div>
         </div>
       </div>
 
       {/* Rules */}
-      <h2 className="text-lg font-bold text-emerald-400 mb-3">Rules & Scoring</h2>
-      <ul className="space-y-2 text-sm text-slate-300 list-disc list-inside mb-8">
-        <li><strong>Incorrect guesses</strong> do not deduct points, but they also do not reveal the next clue automatically.</li>
-        <li>You can press <strong>&quot;Reveal Clue&quot;</strong> anytime to get more information.</li>
-        <li>If you <strong>Give Up</strong>, the player is revealed and you score 0 points.</li>
-        <li><strong>Daily Challenge:</strong> A new footballer every calendar day at 00:00 UTC. Everyone across the globe gets the same player!</li>
-        <li><strong>Practice Mode:</strong> Play infinite random matches anytime to hone your football IQ.</li>
+      <h2 className="text-lg font-black text-emerald-300 uppercase tracking-wider mb-3">
+        Rules & Features
+      </h2>
+      <ul className="space-y-2 text-xs text-emerald-100 list-disc list-inside mb-8 font-medium">
+        <li><strong>Daily Matchday:</strong> Everyone around the globe receives the same mystery footballer each UTC calendar day.</li>
+        <li><strong>Unlimited Training Mode:</strong> Practice anytime with endless random fixtures to sharpen your football IQ.</li>
+        <li><strong>Autocomplete Search:</strong> Quick lookups with club, league, age, and position tags. Diacritics are auto-normalized (e.g. <em>Modrić</em> = <em>modric</em>).</li>
+        <li><strong>No Repeats:</strong> Prevents accidentally re-submitting players you already tried.</li>
       </ul>
 
       <div className="text-center">
         <Link
           href="/"
-          className="inline-block px-6 py-3 rounded-xl bg-emerald-500 text-black font-bold text-sm hover:bg-emerald-400 shadow-lg shadow-emerald-500/20"
+          className="inline-block px-8 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-headline font-black text-sm uppercase tracking-wider border-2 border-emerald-300 shadow-xl"
         >
-          Play Today&apos;s Match
+          Play Today&apos;s Fixture
         </Link>
       </div>
     </main>
