@@ -16,7 +16,7 @@
   display: none;
 }
 
-/* Lighter, more vibrant authentic stadium lawn stripes */
+/* Authentic stadium lawn stripes - fixed so scrolling never shifts gradient */
 .pitch-bg {
   background-color: #144f2c;
   background-image: repeating-linear-gradient(
@@ -26,6 +26,7 @@
     #185c34 64px,
     #185c34 128px
   );
+  background-attachment: fixed;
 }
 
 /* Pitch tactile magnet tile shadows & borders with clean contrast */

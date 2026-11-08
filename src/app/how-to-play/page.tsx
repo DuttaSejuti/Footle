@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function HowToPlay() {
   return (
-    <main className="min-h-screen px-4 py-8 max-w-lg mx-auto text-white pitch-bg">
+    <main className="min-h-screen px-4 py-8 max-w-lg mx-auto text-white">
       <Link
         href="/"
         className="inline-flex items-center gap-2 text-xs font-black text-emerald-200 hover:text-white mb-6 transition-colors bg-[#0e331c] px-3 py-1.5 rounded-lg border-2 border-emerald-400"
