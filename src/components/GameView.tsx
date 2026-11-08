@@ -372,12 +372,9 @@ export default function GameView() {
       />
 
       {/* Navigation Footer */}
-      <footer className="w-full mt-8 pt-4 border-t border-[#1b2b3a] flex items-center justify-between text-xs text-slate-400">
-        <a href="/how-to-play" className="hover:text-emerald-400 transition-colors flex items-center gap-1">
-          <HelpCircle className="w-3.5 h-3.5" /> How to Play
-        </a>
-        <a href="/admin" className="hover:text-emerald-400 transition-colors">
-          Admin Portal
+      <footer className="w-full mt-8 pt-4 border-t border-[#1b2b3a] flex items-center justify-center text-xs text-slate-400">
+        <a href="/how-to-play" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+          <HelpCircle className="w-3.5 h-3.5" /> How to Play & Rules
         </a>
       </footer>
 
