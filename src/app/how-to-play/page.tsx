@@ -48,11 +48,14 @@ export default function HowToPlay() {
             🟨
           </div>
           <div>
-            <span className="text-sm font-black text-white block">Close / Direction (Yellow)</span>
-            <p className="text-xs text-emerald-100">
-              For <strong>Position</strong>: tactical role is adjacent (e.g. Midfielder vs Forward).<br />
-              For <strong>Age</strong>: indicates whether the mystery footballer is older (⬆️) or younger (⬇️).
-            </p>
+            <span className="text-sm font-black text-white block">Close / Career Overlap (Yellow)</span>
+            <ul className="text-xs text-emerald-100 mt-1 space-y-1">
+              <li><strong>Club:</strong> Mystery player previously played for this club in their career.</li>
+              <li><strong>League:</strong> Mystery player played in this league earlier in their career.</li>
+              <li><strong>Nationality:</strong> Same continent or confederation (e.g. UEFA, CONMEBOL, CAF).</li>
+              <li><strong>Position:</strong> Adjacent tactical pitch line (DEF ↔ MID, MID ↔ FWD).</li>
+              <li><strong>Age:</strong> Within ±2 years of mystery player&apos;s age (with ⬆️ older or ⬇️ younger arrow).</li>
+            </ul>
           </div>
         </div>
 

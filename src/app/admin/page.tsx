@@ -44,6 +44,7 @@ export default function AdminPage() {
   });
 
   const [altNamesInput, setAltNamesInput] = useState('');
+  const [prevClubsInput, setPrevClubsInput] = useState('');
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,6 +72,7 @@ export default function AdminPage() {
     setSelectedPlayer(p);
     setFormData(p);
     setAltNamesInput(p.alternativeNames?.join(', ') || '');
+    setPrevClubsInput(p.previousClubs?.join(', ') || '');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -90,8 +92,10 @@ export default function AdminPage() {
       positionAbbr: 'FWD',
       age: 26,
       isActive: true,
+      previousClubs: [],
     });
     setAltNamesInput('');
+    setPrevClubsInput('');
   };
 
   const handleSavePlayer = async (e: React.FormEvent) => {
@@ -127,7 +131,10 @@ export default function AdminPage() {
       clubAbbr: clubAbbrCalc,
       positionAbbr: posAbbrCalc,
       isRetired: false,
-      previousClubs: [],
+      previousClubs: prevClubsInput
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean),
       achievements: [],
       difficulty: 'Easy',
       isActive: formData.isActive ?? true,
@@ -480,17 +487,30 @@ export default function AdminPage() {
               />
             </div>
 
-            <div className="pt-5">
-              <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-white">
-                <input
-                  type="checkbox"
-                  checked={formData.isActive ?? true}
-                  onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                  className="rounded text-emerald-500 w-4 h-4"
-                />
-                <span>Active in Daily & Training Pool</span>
+            <div>
+              <label className="text-xs text-emerald-200 font-bold block mb-1">
+                Former Clubs (for Yellow clues, comma-separated)
               </label>
+              <input
+                type="text"
+                value={prevClubsInput}
+                onChange={(e) => setPrevClubsInput(e.target.value)}
+                placeholder="e.g. Dortmund, Monaco, Chelsea"
+                className="w-full px-3 py-2 bg-[#081f10] border-2 border-[#297a49] rounded-xl text-sm text-white font-bold"
+              />
             </div>
+          </div>
+
+          <div className="pt-2">
+            <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-white">
+              <input
+                type="checkbox"
+                checked={formData.isActive ?? true}
+                onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                className="rounded text-emerald-500 w-4 h-4"
+              />
+              <span>Active in Daily & Training Pool</span>
+            </label>
           </div>
 
           <div className="flex gap-3 justify-end pt-2">
