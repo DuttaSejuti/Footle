@@ -276,15 +276,17 @@ export function compareFootballers(guessed: Footballer, target: Footballer): Gue
 
   // 4. Position:
   // Exact: Same position
-  // Partial: Adjacent pitch tactical line (DEF ↔ MID or MID ↔ FWD)
+  // Partial: Adjacent pitch tactical line (GK ↔ DEF ↔ MID ↔ FWD)
   let posStatus: MatchStatus = 'wrong';
   if (guessed.position === target.position) {
     posStatus = 'correct';
   } else if (
-    (guessed.position === 'Midfielder' && target.position === 'Forward') ||
-    (guessed.position === 'Forward' && target.position === 'Midfielder') ||
+    (guessed.position === 'Goalkeeper' && target.position === 'Defender') ||
+    (guessed.position === 'Defender' && target.position === 'Goalkeeper') ||
     (guessed.position === 'Defender' && target.position === 'Midfielder') ||
-    (guessed.position === 'Midfielder' && target.position === 'Defender')
+    (guessed.position === 'Midfielder' && target.position === 'Defender') ||
+    (guessed.position === 'Midfielder' && target.position === 'Forward') ||
+    (guessed.position === 'Forward' && target.position === 'Midfielder')
   ) {
     posStatus = 'partial'; // Adjacent pitch tactical line
   }

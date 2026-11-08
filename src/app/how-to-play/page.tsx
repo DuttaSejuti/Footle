@@ -53,7 +53,7 @@ export default function HowToPlay() {
               <li><strong>Club:</strong> Mystery player previously played for this club in their career.</li>
               <li><strong>League:</strong> Mystery player played in this league earlier in their career.</li>
               <li><strong>Nationality:</strong> Same continent or confederation (e.g. UEFA, CONMEBOL, CAF).</li>
-              <li><strong>Position:</strong> Adjacent tactical pitch line (DEF ↔ MID, MID ↔ FWD).</li>
+              <li><strong>Position:</strong> Adjacent tactical pitch line (GK ↔ DEF, DEF ↔ MID, MID ↔ FWD).</li>
               <li><strong>Age:</strong> Within ±2 years of mystery player&apos;s age (with ⬆️ older or ⬇️ younger arrow).</li>
             </ul>
           </div>
