@@ -136,23 +136,15 @@ export function WordleSearch({ onSelectPlayer, disabled, guessedPlayerIds }: Wor
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-[#0e331c] flex items-center justify-center border-2 border-emerald-400 overflow-hidden flex-shrink-0">
-                    {p.imageUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={p.imageUrl} alt={p.displayName} className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="text-xl">{p.flagEmoji}</span>
-                    )}
+                  <div className="w-9 h-9 rounded-lg bg-[#0e331c] flex items-center justify-center border-2 border-emerald-400 flex-shrink-0 text-xl">
+                    {p.flagEmoji}
                   </div>
                   <div className="flex flex-col">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-headline font-black text-sm text-white group-hover:text-emerald-300 transition-colors">
-                        {p.displayName}
-                      </span>
-                      <span className="text-sm">{p.flagEmoji}</span>
-                    </div>
-                    <span className="text-xs text-emerald-200 font-mono font-bold">
-                      {p.currentClub} • {p.league} • {p.positionAbbr} • {p.age}y
+                    <span className="font-headline font-black text-sm text-white group-hover:text-emerald-300 transition-colors">
+                      {p.displayName}
+                    </span>
+                    <span className="text-xs text-emerald-200 font-bold">
+                      {p.nationality}
                     </span>
                   </div>
                 </div>
