@@ -5,19 +5,31 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        pitch: {
-          dark: "#0b1319",
-          card: "#121e28",
-          cardHover: "#172735",
-          border: "#1e3345",
-          accent: "#10b981", // vibrant football pitch green
-          accentHover: "#059669",
-          gold: "#eab308",
-          grass: "#16a34a",
+        turf: {
+          dark: "#0a2a16",
+          base: "#0c331b",
+          stripe: "#103e22",
+          border: "#1d5231",
+          chalk: "#f8fafc",
+          muted: "#7ca88b",
         },
+        match: {
+          exact: "#16a34a",
+          exactBorder: "#22c55e",
+          close: "#eab308",
+          closeBorder: "#fde047",
+          wrong: "#14281d",
+          wrongBorder: "#1e3b2c",
+        },
+      },
+      fontFamily: {
+        sans: ["-apple-system", "BlinkMacSystemFont", "Inter", "sans-serif"],
+        headline: ["Outfit", "-apple-system", "sans-serif"],
+        mono: ["Space Grotesk", "ui-monospace", "monospace"],
       },
     },
   },

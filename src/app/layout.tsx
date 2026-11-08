@@ -2,19 +2,14 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: "Who's the Footballer? — Daily Football Player Guessing Game",
-  description: "Test your football knowledge! Guess the mystery footballer in six progressive clues. Daily challenges, verified stats, and streak tracking.",
-  keywords: ["football", "soccer", "wordle football", "who is the footballer", "trivia", "player quiz", "daily challenge"],
+  title: "FOOTYDLE — Daily Football Player Guessing Game",
+  description: "Test your football knowledge on the pitch! Guess the mystery footballer in six tactical attempts with Wordle-style matchday feedback.",
+  keywords: ["footydle", "football wordle", "poeltl soccer", "football quiz", "mystery player", "who is the footballer"],
   openGraph: {
-    title: "Who's the Footballer? — Daily Mystery Football Player",
-    description: "Can you guess today's mystery footballer using 6 clues? Play now free on mobile & web.",
+    title: "FOOTYDLE — Daily Mystery Footballer",
+    description: "Can you guess today's mystery footballer using 6 tactical attempts? Play free on mobile & web.",
     type: "website",
-    siteName: "Who's the Footballer?",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Who's the Footballer?",
-    description: "Daily football player guessing game. 6 progressive clues. Test your IQ!",
+    siteName: "FOOTYDLE",
   },
 };
 
@@ -24,8 +19,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="antialiased selection:bg-emerald-500 selection:text-black">
+    <html lang="en" className="dark">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&family=Space+Grotesk:wght@600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="pitch-bg font-sans text-slate-100 antialiased selection:bg-emerald-500 selection:text-black min-h-screen relative overflow-x-hidden">
         {children}
       </body>
     </html>

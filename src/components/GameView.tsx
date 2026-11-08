@@ -7,8 +7,8 @@ import { WordleGrid } from '@/components/WordleGrid';
 import { ScoutDrawer } from '@/components/ScoutDrawer';
 import { ResultsModal } from '@/components/ResultsModal';
 import { Footballer, GuessComparison } from '@/types/footballer';
-import { getUtcTodayDateString, calculateScore } from '@/lib/game-logic';
-import { HelpCircle, RotateCcw, Flag, Trophy, AlertCircle } from 'lucide-react';
+import { getUtcTodayDateString } from '@/lib/game-logic';
+import { HelpCircle, Calendar, BarChart3, Flag, Trophy, AlertCircle } from 'lucide-react';
 
 export default function GameView() {
   const [mode, setMode] = useState<'daily' | 'practice'>('daily');
@@ -25,9 +25,8 @@ export default function GameView() {
   const [practicePlayerId, setPracticePlayerId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isShaking, setIsShaking] = useState<boolean>(false);
-  const [countdown, setCountdown] = useState<string>('00:00:00');
+  const [countdown, setCountdown] = useState<string>('08:42:12');
 
-  // Countdown timer until next UTC midnight
   useEffect(() => {
     function updateCountdown() {
       const now = new Date();
@@ -43,7 +42,6 @@ export default function GameView() {
     return () => clearInterval(interval);
   }, []);
 
-  // Initialize and load saved state
   useEffect(() => {
     const today = getUtcTodayDateString();
     setCurrentDateStr(today);
@@ -62,7 +60,7 @@ export default function GameView() {
     setFeedbackMessage(null);
 
     if (targetMode === 'daily') {
-      const storageKey = `footle_wordle_${date}`;
+      const storageKey = `footle_pitch_${date}`;
       const saved = localStorage.getItem(storageKey);
 
       let savedClues = 1;
@@ -135,7 +133,7 @@ export default function GameView() {
     mystery?: Footballer
   ) => {
     if (mode === 'daily') {
-      const storageKey = `footle_wordle_${currentDateStr}`;
+      const storageKey = `footle_pitch_${currentDateStr}`;
       localStorage.setItem(
         storageKey,
         JSON.stringify({
@@ -216,9 +214,8 @@ export default function GameView() {
   const handlePlayerGuess = async (selected: PlayerOption) => {
     if (isGameOver) return;
 
-    // Check if already guessed
     if (comparisons.some((c) => c.player.id === selected.id)) {
-      setFeedbackMessage(`You already tried ${selected.displayName}!`);
+      setFeedbackMessage(`You already subbed in ${selected.displayName}!`);
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 350);
       return;
@@ -276,7 +273,6 @@ export default function GameView() {
             }),
           }).catch(() => {});
         } else {
-          // Check if maximum 6 attempts reached
           if (nextComparisons.length >= 6) {
             handleGiveUp();
           } else {
@@ -295,46 +291,57 @@ export default function GameView() {
     }
   };
 
-  const attemptsLeft = Math.max(0, 6 - comparisons.length);
-
   return (
-    <div className="w-full min-h-screen flex flex-col justify-between bg-[#0a1017] text-slate-100">
-      {/* Wordle Top Navbar */}
-      <header className="w-full border-b border-[#1b2b3a] bg-[#070c12]/90 backdrop-blur-md sticky top-0 z-50">
+    <div className="w-full min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+      {/* Ghosted Pitch Chalk Markings Overlay */}
+      <div className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center opacity-15 overflow-hidden">
+        {/* Center circle */}
+        <div className="w-[580px] h-[580px] rounded-full border-[3px] border-white absolute" />
+        <div className="w-3.5 h-3.5 rounded-full bg-white absolute" />
+        {/* Halfway line */}
+        <div className="w-full h-[3px] bg-white absolute top-1/2 -translate-y-1/2" />
+        {/* Top Penalty box arc hint */}
+        <div className="w-[320px] h-[160px] border-[3px] border-t-0 border-white rounded-b-full absolute -top-8 opacity-40" />
+        {/* Bottom Penalty box arc hint */}
+        <div className="w-[320px] h-[160px] border-[3px] border-b-0 border-white rounded-t-full absolute -bottom-8 opacity-40" />
+      </div>
+
+      {/* Minimal Matchday Header */}
+      <header className="w-full border-b border-turf-border/60 bg-turf-dark/90 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-[760px] mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Left utility icons */}
-          <div className="flex items-center gap-1">
+          {/* Left Match Utility Icons */}
+          <div className="flex items-center gap-1.5">
             <Link
               href="/how-to-play"
-              aria-label="How to Play"
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#152331] transition-colors"
+              aria-label="Help & Pitch Rules"
+              className="w-9 h-9 rounded-md border border-turf-border/50 bg-turf-base/80 flex items-center justify-center text-turf-muted hover:text-white hover:border-turf-chalk/40 transition-colors"
             >
               <HelpCircle className="w-5 h-5" />
             </Link>
 
             <button
               onClick={() => handleModeChange(mode === 'daily' ? 'practice' : 'daily')}
-              className="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-[#142230] text-emerald-400 border border-[#21374d] hover:bg-[#1a2d40] transition-colors"
+              className="px-2.5 py-1 rounded border border-turf-border/50 bg-turf-base/80 text-xs font-mono font-bold text-turf-muted hover:text-white transition-colors"
             >
               {mode === 'daily' ? 'Daily' : 'Practice'}
             </button>
           </div>
 
-          {/* Center Brand Title */}
+          {/* Center Wordle Title with Chalk Aesthetic */}
           <div className="flex flex-col items-center select-none">
-            <h1 className="font-headline text-2xl font-black tracking-widest uppercase text-slate-100 flex items-center gap-1">
-              FOOTY<span className="text-emerald-400 font-black">DLE</span>
+            <h1 className="font-headline text-2xl tracking-[0.2em] font-black uppercase text-white flex items-center gap-1">
+              FOOTY<span className="text-emerald-400 font-extrabold border-b-2 border-emerald-400 pb-0.5">DLE</span>
             </h1>
-            <span className="font-mono text-[10px] text-slate-400 uppercase tracking-wider font-semibold">
-              {mode === 'daily' ? `Daily Match • ${currentDateStr}` : 'Unlimited Training Mode'}
+            <span className="font-mono text-[10px] text-turf-muted tracking-widest uppercase font-semibold">
+              {mode === 'daily' ? `Matchday • ${currentDateStr}` : 'Training Matchday'}
             </span>
           </div>
 
-          {/* Right Status Badge */}
+          {/* Right Stats & Tactics Counter */}
           <div className="flex items-center gap-2">
-            <div className="bg-[#142332] border border-[#21374d] px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+            <div className="bg-turf-dark border border-turf-border px-3 py-1 rounded-md flex items-center gap-1.5 shadow-inner">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="font-mono text-xs font-black text-slate-100">
+              <span className="font-mono text-xs font-bold text-white tracking-wider">
                 {comparisons.length}/6
               </span>
             </div>
@@ -344,7 +351,7 @@ export default function GameView() {
                 onClick={handleGiveUp}
                 aria-label="Give up"
                 title="Give up match"
-                className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-rose-400 hover:bg-[#1e1b22] transition-colors"
+                className="w-9 h-9 rounded-md border border-turf-border/50 bg-turf-base/80 flex items-center justify-center text-turf-muted hover:text-red-400 transition-colors"
               >
                 <Flag className="w-4 h-4" />
               </button>
@@ -353,9 +360,9 @@ export default function GameView() {
         </div>
       </header>
 
-      {/* Main Central Board Container (max-w-[760px]) */}
-      <main className="w-full max-w-[760px] mx-auto px-4 py-4 flex-1 flex flex-col justify-start gap-3.5">
-        {/* Scout Silhouette & Intel Drawer */}
+      {/* Central Pitch Wordle Board */}
+      <main className="w-full max-w-[760px] mx-auto px-4 py-5 flex-1 flex flex-col justify-start gap-3.5 z-10">
+        {/* Pitch Scouting Drawer / Hint bar */}
         <ScoutDrawer
           clues={cluesData}
           cluesRevealed={cluesRevealed}
@@ -363,7 +370,7 @@ export default function GameView() {
           isGameOver={isGameOver}
         />
 
-        {/* Wordle Autocomplete Search Input */}
+        {/* Dugout Search & Input Area */}
         <div className={`w-full ${isShaking ? 'animate-shake' : ''}`}>
           <WordleSearch
             onSelectPlayer={handlePlayerGuess}
@@ -371,49 +378,50 @@ export default function GameView() {
             guessedPlayerIds={comparisons.map((c) => c.player.id)}
           />
 
-          {/* Feedback message banner */}
           {feedbackMessage && (
             <div
-              className={`mt-2.5 p-3 rounded-xl border text-xs font-semibold flex items-center gap-2 animate-clue-enter ${
+              className={`mt-2.5 p-3 rounded-lg border text-xs font-bold flex items-center gap-2 animate-clue-enter ${
                 isWon
-                  ? 'bg-emerald-950/70 border-emerald-500/40 text-emerald-200'
-                  : 'bg-rose-950/60 border-rose-500/30 text-rose-200'
+                  ? 'bg-match-exact/20 border-match-exactBorder text-emerald-300'
+                  : 'bg-red-950/60 border-red-700/50 text-red-200'
               }`}
             >
-              {isWon ? <Trophy className="w-4 h-4 text-emerald-400 shrink-0" /> : <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />}
+              {isWon ? <Trophy className="w-4 h-4 text-emerald-400 shrink-0" /> : <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />}
               <span>{feedbackMessage}</span>
             </div>
           )}
         </div>
 
-        {/* Wordle / Poeltl Grid with Tile Match Feedback */}
+        {/* 6-ROW GUESS MATRIX */}
         <WordleGrid comparisons={comparisons} maxAttempts={6} />
 
-        {/* Game Finished Summary Pill */}
         {isGameOver && (
-          <div className="mt-1 p-3.5 card-specular rounded-xl flex items-center justify-between border-emerald-500/40 animate-clue-enter">
+          <div className="mt-2 p-3 bg-turf-dark border border-turf-border rounded-lg flex items-center justify-between animate-clue-enter">
             <div className="text-xs">
-              <span className="font-bold text-slate-100">Match Concluded! </span>
-              <span className="text-emerald-400 font-mono font-black">
-                {isWon ? `Solved in ${comparisons.length}/6 attempts` : 'Better luck next time!'}
+              <span className="font-bold text-white">Matchday Concluded! </span>
+              <span className="text-emerald-400 font-mono font-bold">
+                {isWon ? `Solved in ${comparisons.length}/6 attempts` : 'Full Time'}
               </span>
             </div>
             <button
               onClick={() => setShowResultsModal(true)}
-              className="px-3.5 py-1.5 rounded-lg bg-emerald-400 text-slate-950 text-xs font-black hover:bg-emerald-300 pressable"
+              className="px-3 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-headline text-xs font-black uppercase tracking-wider border border-emerald-400"
             >
-              Results Card
+              Match Summary Card
             </button>
           </div>
         )}
       </main>
 
-      {/* Clean Wordle Footer */}
-      <footer className="w-full border-t border-[#1b2b3a]/70 py-3 bg-[#070c12]/80 backdrop-blur-sm">
-        <div className="max-w-[760px] mx-auto px-4 flex items-center justify-between text-xs text-slate-400 font-mono">
-          <span>FOOTYDLE • DAILY MATCH</span>
+      {/* Authentic Touchline Footer with Countdown */}
+      <footer className="w-full border-t border-turf-border/80 py-3 bg-turf-dark/95 z-20">
+        <div className="max-w-[760px] mx-auto px-4 flex items-center justify-between text-xs text-turf-muted font-mono">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span>FOOTYDLE • PITCH VERIFIED</span>
+          </div>
           <span>
-            Next mystery in <strong className="text-emerald-400 font-bold">{countdown}</strong>
+            Next mystery fixture in <strong className="text-white tracking-widest">{countdown}</strong>
           </span>
         </div>
       </footer>
