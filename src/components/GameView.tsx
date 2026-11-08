@@ -217,7 +217,7 @@ export default function GameView() {
 
       {/* High-Contrast Matchday Header */}
       <header className="w-full border-b-2 border-white/20 bg-[#0c2f1a]/95 backdrop-blur-md sticky top-0 z-50 shadow-md">
-        <div className="max-w-[760px] mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="max-w-[860px] mx-auto px-4 h-16 flex items-center justify-between">
           {/* Left Match Utility Icons */}
           <div className="flex items-center gap-2">
             <Link
@@ -252,7 +252,7 @@ export default function GameView() {
       </header>
 
       {/* Central Pitch Wordle Board */}
-      <main className="w-full max-w-[760px] mx-auto px-4 py-6 flex-1 flex flex-col justify-start gap-4 z-10">
+      <main className="w-full max-w-[860px] mx-auto px-4 py-6 flex-1 flex flex-col justify-start gap-4 z-10">
         {/* Dugout Search & Input Area */}
         <div className={`w-full ${isShaking ? 'animate-shake' : ''}`}>
           <WordleSearch
@@ -285,7 +285,7 @@ export default function GameView() {
 
       {/* High-Contrast Touchline Footer with Countdown */}
       <footer className="w-full border-t-2 border-white/20 py-3.5 bg-[#0c2f1a]/95 z-20 shadow-inner">
-        <div className="max-w-[760px] mx-auto px-4 flex items-center justify-between text-xs text-emerald-100 font-mono font-bold">
+        <div className="max-w-[860px] mx-auto px-4 flex items-center justify-between text-xs text-emerald-100 font-mono font-bold">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
             <span className="text-white font-extrabold tracking-wide">FOOTYDLE • DAILY FIXTURE</span>
