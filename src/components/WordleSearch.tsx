@@ -114,7 +114,7 @@ export function WordleSearch({ onSelectPlayer, disabled, guessedPlayerIds }: Wor
           }}
           className="mr-1.5 px-4 py-2 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-black font-headline text-xs font-black uppercase tracking-wider rounded-lg border-2 border-emerald-300 transition-all active:translate-y-0.5 flex items-center gap-1 shadow-md cursor-pointer"
         >
-          <span>Sub In</span>
+          <span>Pick</span>
           <ArrowRight className="w-4 h-4 stroke-[3]" />
         </button>
       </div>
