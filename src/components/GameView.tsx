@@ -7,7 +7,7 @@ import { WordleGrid } from '@/components/WordleGrid';
 import { ResultsModal } from '@/components/ResultsModal';
 import { Footballer, GuessComparison } from '@/types/footballer';
 import { getUtcTodayDateString } from '@/lib/game-logic';
-import { HelpCircle, Flag, Trophy, AlertCircle } from 'lucide-react';
+import { HelpCircle, Trophy, AlertCircle } from 'lucide-react';
 
 export default function GameView() {
   const [currentDateStr, setCurrentDateStr] = useState<string>('');
@@ -247,17 +247,6 @@ export default function GameView() {
                 {comparisons.length}/6
               </span>
             </div>
-
-            {!isGameOver && (
-              <button
-                onClick={handleGiveUp}
-                aria-label="Give up"
-                title="Give up match"
-                className="w-10 h-10 rounded-lg border-2 border-red-500/70 bg-[#2b1010] flex items-center justify-center text-red-200 hover:text-white hover:bg-red-700 transition-colors shadow-sm"
-              >
-                <Flag className="w-4 h-4 stroke-[2.5]" />
-              </button>
-            )}
           </div>
         </div>
       </header>
