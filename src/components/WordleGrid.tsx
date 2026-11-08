@@ -71,24 +71,13 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
                     : 'bg-[#0f1f15] border-[#294a34] text-slate-300'
                 }`}
               >
-                <span className="text-base sm:text-lg leading-none">{comp.nationality.flag}</span>
+                <span className="text-xl sm:text-2xl leading-none">{comp.nationality.flag}</span>
                 <span
-                  className={`font-mono text-[10px] sm:text-xs font-black truncate max-w-full mt-0.5 ${
+                  className={`font-mono text-xs sm:text-sm font-black truncate max-w-full mt-1 ${
                     comp.nationality.status === 'partial' ? 'text-zinc-950' : 'text-white'
                   }`}
                 >
                   {comp.nationality.code}
-                </span>
-                <span
-                  className={`font-mono text-[8px] sm:text-[9px] uppercase font-black tracking-tight leading-none ${
-                    comp.nationality.status === 'partial' ? 'text-zinc-900' : 'text-white/80'
-                  }`}
-                >
-                  {comp.nationality.status === 'correct'
-                    ? 'Exact'
-                    : comp.nationality.status === 'partial'
-                    ? 'Region'
-                    : 'Miss'}
                 </span>
               </div>
 
@@ -103,22 +92,11 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
                 }`}
               >
                 <span
-                  className={`font-mono text-[10px] sm:text-xs font-black leading-tight truncate max-w-full ${
+                  className={`font-mono text-xs sm:text-sm font-black leading-tight truncate max-w-full ${
                     comp.league.status === 'partial' ? 'text-zinc-950' : 'text-white'
                   }`}
                 >
                   {comp.league.value}
-                </span>
-                <span
-                  className={`font-mono text-[9px] sm:text-[10px] uppercase font-black tracking-tight ${
-                    comp.league.status === 'partial' ? 'text-zinc-900' : 'text-white/90'
-                  }`}
-                >
-                  {comp.league.status === 'correct'
-                    ? 'Match'
-                    : comp.league.status === 'partial'
-                    ? 'Played'
-                    : 'Miss'}
                 </span>
               </div>
 
@@ -139,17 +117,6 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
                 >
                   {comp.club.abbr}
                 </span>
-                <span
-                  className={`font-mono text-[9px] sm:text-[10px] uppercase font-black tracking-tight truncate max-w-full ${
-                    comp.club.status === 'partial' ? 'text-zinc-900' : 'text-white/90'
-                  }`}
-                >
-                  {comp.club.status === 'correct'
-                    ? 'Exact'
-                    : comp.club.status === 'partial'
-                    ? 'Former'
-                    : 'Miss'}
-                </span>
               </div>
 
               {/* POS */}
@@ -169,17 +136,6 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
                 >
                   {comp.position.abbr}
                 </span>
-                <span
-                  className={`font-mono text-[9px] sm:text-[10px] font-black uppercase ${
-                    comp.position.status === 'partial' ? 'text-zinc-900' : 'text-white/90'
-                  }`}
-                >
-                  {comp.position.status === 'correct'
-                    ? 'Exact'
-                    : comp.position.status === 'partial'
-                    ? 'Close'
-                    : 'Miss'}
-                </span>
               </div>
 
               {/* AGE */}
@@ -197,7 +153,7 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
                         : 'bg-[#0f1f15] border-[#294a34] text-slate-300'
                     }`}
                   >
-                    <div className="flex items-center justify-center gap-0.5">
+                    <div className="flex items-center justify-center gap-1">
                       <span
                         className={`font-mono text-xs sm:text-sm font-black ${
                           isExactAge
@@ -212,21 +168,6 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
                       {comp.age.status === 'higher' && <span className="text-sm font-black">⬆️</span>}
                       {comp.age.status === 'lower' && <span className="text-sm font-black">⬇️</span>}
                     </div>
-                    <span
-                      className={`font-mono text-[9px] sm:text-[10px] font-black uppercase ${
-                        isExactAge
-                          ? 'text-white/90'
-                          : isCloseAge
-                          ? 'text-zinc-900'
-                          : 'text-emerald-300/80'
-                      }`}
-                    >
-                      {isExactAge
-                        ? 'Exact'
-                        : comp.age.status === 'higher'
-                        ? 'Older'
-                        : 'Younger'}
-                    </span>
                   </div>
                 );
               })()}

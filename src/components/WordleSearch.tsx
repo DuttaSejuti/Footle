@@ -144,12 +144,9 @@ export function WordleSearch({ onSelectPlayer, disabled, guessedPlayerIds }: Wor
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  {alreadyGuessed && (
-                    <span className="text-xs font-black text-red-300">Guessed</span>
-                  )}
-                  <ArrowRight className="w-4 h-4 text-emerald-300 group-hover:translate-x-1 transition-transform stroke-[2.5]" />
-                </div>
+                {alreadyGuessed && (
+                  <span className="text-xs font-black text-red-300">Guessed</span>
+                )}
               </button>
             );
           })}
