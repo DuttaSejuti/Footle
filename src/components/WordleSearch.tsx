@@ -84,9 +84,9 @@ export function WordleSearch({ onSelectPlayer, disabled, guessedPlayerIds }: Wor
   return (
     <div ref={containerRef} className="relative w-full z-30">
       {/* Dugout Search & Input Area */}
-      <div className="flex items-center bg-turf-dark border-2 border-white/20 rounded-lg shadow-md focus-within:border-white focus-within:ring-2 focus-within:ring-white/20 transition-all overflow-hidden">
-        <div className="pl-3.5 pr-1 text-turf-muted flex items-center justify-center">
-          <Search className="w-5 h-5" />
+      <div className="flex items-center bg-[#0b2917] border-2 border-white/60 rounded-xl shadow-lg focus-within:border-white focus-within:ring-2 focus-within:ring-white transition-all overflow-hidden">
+        <div className="pl-3.5 pr-1 text-emerald-300 flex items-center justify-center">
+          <Search className="w-5 h-5 stroke-[2.5]" />
         </div>
         <input
           type="text"
@@ -102,7 +102,7 @@ export function WordleSearch({ onSelectPlayer, disabled, guessedPlayerIds }: Wor
               ? 'Matchday complete'
               : 'Type footballer name (e.g. De Bruyne, Salah, Bellingham)...'
           }
-          className="w-full bg-transparent px-3 py-3 text-sm md:text-base text-white placeholder:text-turf-muted/70 focus:outline-none font-sans font-medium"
+          className="w-full bg-transparent px-3 py-3.5 text-sm md:text-base text-white placeholder:text-emerald-200/60 focus:outline-none font-bold"
         />
         <button
           type="button"
@@ -112,16 +112,16 @@ export function WordleSearch({ onSelectPlayer, disabled, guessedPlayerIds }: Wor
               handleSelect(suggestions[0]);
             }
           }}
-          className="mr-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white font-headline text-xs font-black uppercase tracking-wider rounded border border-emerald-400 transition-all active:translate-y-0.5 flex items-center gap-1 shadow-sm cursor-pointer"
+          className="mr-1.5 px-4 py-2 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-black font-headline text-xs font-black uppercase tracking-wider rounded-lg border-2 border-emerald-300 transition-all active:translate-y-0.5 flex items-center gap-1 shadow-md cursor-pointer"
         >
           <span>Sub In</span>
-          <ArrowRight className="w-3.5 h-3.5" />
+          <ArrowRight className="w-4 h-4 stroke-[3]" />
         </button>
       </div>
 
       {/* Autocomplete Dropdown Preview */}
       {isOpen && !disabled && (
-        <div className="absolute top-full left-0 right-0 mt-1.5 bg-turf-dark border border-turf-border rounded-lg shadow-2xl overflow-hidden z-50 divide-y divide-turf-border/60">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-[#0a2615] border-2 border-emerald-400 rounded-xl shadow-2xl overflow-hidden z-50 divide-y divide-[#1d5231]">
           {suggestions.map((p) => {
             const alreadyGuessed = guessedPlayerIds.includes(p.id);
 
@@ -131,27 +131,27 @@ export function WordleSearch({ onSelectPlayer, disabled, guessedPlayerIds }: Wor
                 type="button"
                 disabled={alreadyGuessed}
                 onClick={() => handleSelect(p)}
-                className={`w-full flex items-center justify-between p-2.5 hover:bg-turf-base transition-colors text-left group ${
-                  alreadyGuessed ? 'opacity-40 cursor-not-allowed bg-turf-dark/70' : ''
+                className={`w-full flex items-center justify-between p-3 hover:bg-[#123e23] transition-colors text-left group ${
+                  alreadyGuessed ? 'opacity-40 cursor-not-allowed bg-[#081a0e]' : ''
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded bg-turf-base flex items-center justify-center border border-turf-border overflow-hidden flex-shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-[#0e331c] flex items-center justify-center border-2 border-emerald-400 overflow-hidden flex-shrink-0">
                     {p.imageUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={p.imageUrl} alt={p.displayName} className="w-full h-full object-cover" />
                     ) : (
-                      <span className="text-lg">{p.flagEmoji}</span>
+                      <span className="text-xl">{p.flagEmoji}</span>
                     )}
                   </div>
                   <div className="flex flex-col">
                     <div className="flex items-center gap-1.5">
-                      <span className="font-headline font-bold text-sm text-white group-hover:text-emerald-400 transition-colors">
+                      <span className="font-headline font-black text-sm text-white group-hover:text-emerald-300 transition-colors">
                         {p.displayName}
                       </span>
-                      <span className="text-xs">{p.flagEmoji}</span>
+                      <span className="text-sm">{p.flagEmoji}</span>
                     </div>
-                    <span className="text-xs text-turf-muted font-mono">
+                    <span className="text-xs text-emerald-200 font-mono font-bold">
                       {p.currentClub} • {p.league} • {p.positionAbbr} • {p.age}y
                     </span>
                   </div>
@@ -159,9 +159,9 @@ export function WordleSearch({ onSelectPlayer, disabled, guessedPlayerIds }: Wor
 
                 <div className="flex items-center gap-2">
                   {alreadyGuessed && (
-                    <span className="text-[11px] font-bold text-red-400">Guessed</span>
+                    <span className="text-xs font-black text-red-300">Guessed</span>
                   )}
-                  <ArrowRight className="w-4 h-4 text-turf-muted group-hover:text-emerald-400 transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-emerald-300 group-hover:translate-x-1 transition-transform stroke-[2.5]" />
                 </div>
               </button>
             );

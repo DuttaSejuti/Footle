@@ -16,25 +16,25 @@
   display: none;
 }
 
-/* Authentic Stadium Mown Lawn Stripes Background */
+/* Lighter, more vibrant authentic stadium lawn stripes */
 .pitch-bg {
-  background-color: #0c331b;
+  background-color: #144f2c;
   background-image: repeating-linear-gradient(
     90deg,
-    #0c331b 0px,
-    #0c331b 64px,
-    #103e22 64px,
-    #103e22 128px
+    #144f2c 0px,
+    #144f2c 64px,
+    #185c34 64px,
+    #185c34 128px
   );
 }
 
-/* Pitch tactile magnet tile shadows & borders */
+/* Pitch tactile magnet tile shadows & borders with clean contrast */
 .tactic-tile {
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .empty-tile {
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
 }
 
 /* Smooth reveal & tactile button press */

@@ -293,35 +293,31 @@ export default function GameView() {
 
   return (
     <div className="w-full min-h-screen flex flex-col justify-between relative overflow-x-hidden">
-      {/* Ghosted Pitch Chalk Markings Overlay */}
-      <div className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center opacity-15 overflow-hidden">
-        {/* Center circle */}
-        <div className="w-[580px] h-[580px] rounded-full border-[3px] border-white absolute" />
-        <div className="w-3.5 h-3.5 rounded-full bg-white absolute" />
-        {/* Halfway line */}
-        <div className="w-full h-[3px] bg-white absolute top-1/2 -translate-y-1/2" />
-        {/* Top Penalty box arc hint */}
-        <div className="w-[320px] h-[160px] border-[3px] border-t-0 border-white rounded-b-full absolute -top-8 opacity-40" />
-        {/* Bottom Penalty box arc hint */}
-        <div className="w-[320px] h-[160px] border-[3px] border-b-0 border-white rounded-t-full absolute -bottom-8 opacity-40" />
+      {/* Crisp Pitch Chalk Markings Overlay */}
+      <div className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center opacity-25 overflow-hidden">
+        <div className="w-[600px] h-[600px] rounded-full border-4 border-white absolute" />
+        <div className="w-4 h-4 rounded-full bg-white absolute" />
+        <div className="w-full h-[4px] bg-white absolute top-1/2 -translate-y-1/2" />
+        <div className="w-[340px] h-[170px] border-4 border-t-0 border-white rounded-b-full absolute -top-10 opacity-50" />
+        <div className="w-[340px] h-[170px] border-4 border-b-0 border-white rounded-t-full absolute -bottom-10 opacity-50" />
       </div>
 
-      {/* Minimal Matchday Header */}
-      <header className="w-full border-b border-turf-border/60 bg-turf-dark/90 backdrop-blur-md sticky top-0 z-50">
+      {/* High-Contrast Matchday Header */}
+      <header className="w-full border-b-2 border-white/20 bg-[#0c2f1a]/95 backdrop-blur-md sticky top-0 z-50 shadow-md">
         <div className="max-w-[760px] mx-auto px-4 h-16 flex items-center justify-between">
           {/* Left Match Utility Icons */}
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <Link
               href="/how-to-play"
               aria-label="Help & Pitch Rules"
-              className="w-9 h-9 rounded-md border border-turf-border/50 bg-turf-base/80 flex items-center justify-center text-turf-muted hover:text-white hover:border-turf-chalk/40 transition-colors"
+              className="w-10 h-10 rounded-lg border-2 border-emerald-400/80 bg-[#144f2c] flex items-center justify-center text-white hover:bg-emerald-600 transition-colors shadow-sm"
             >
-              <HelpCircle className="w-5 h-5" />
+              <HelpCircle className="w-5 h-5 stroke-[2.5]" />
             </Link>
 
             <button
               onClick={() => handleModeChange(mode === 'daily' ? 'practice' : 'daily')}
-              className="px-2.5 py-1 rounded border border-turf-border/50 bg-turf-base/80 text-xs font-mono font-bold text-turf-muted hover:text-white transition-colors"
+              className="px-3 py-1.5 rounded-lg border-2 border-emerald-400 bg-[#144f2c] text-xs font-mono font-black text-white hover:bg-emerald-600 transition-colors shadow-sm"
             >
               {mode === 'daily' ? 'Daily' : 'Practice'}
             </button>
@@ -329,19 +325,19 @@ export default function GameView() {
 
           {/* Center Wordle Title with Chalk Aesthetic */}
           <div className="flex flex-col items-center select-none">
-            <h1 className="font-headline text-2xl tracking-[0.2em] font-black uppercase text-white flex items-center gap-1">
-              FOOTY<span className="text-emerald-400 font-extrabold border-b-2 border-emerald-400 pb-0.5">DLE</span>
+            <h1 className="font-headline text-2xl tracking-[0.2em] font-black uppercase text-white flex items-center gap-1 drop-shadow-md">
+              FOOTY<span className="text-emerald-300 font-black border-b-4 border-emerald-400 pb-0.5">DLE</span>
             </h1>
-            <span className="font-mono text-[10px] text-turf-muted tracking-widest uppercase font-semibold">
+            <span className="font-mono text-xs text-emerald-100 tracking-widest uppercase font-extrabold drop-shadow">
               {mode === 'daily' ? `Matchday • ${currentDateStr}` : 'Training Matchday'}
             </span>
           </div>
 
           {/* Right Stats & Tactics Counter */}
           <div className="flex items-center gap-2">
-            <div className="bg-turf-dark border border-turf-border px-3 py-1 rounded-md flex items-center gap-1.5 shadow-inner">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="font-mono text-xs font-bold text-white tracking-wider">
+            <div className="bg-[#0b2917] border-2 border-emerald-400 px-3.5 py-1 rounded-lg flex items-center gap-1.5 shadow-sm">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="font-mono text-sm font-black text-white tracking-wider">
                 {comparisons.length}/6
               </span>
             </div>
@@ -351,9 +347,9 @@ export default function GameView() {
                 onClick={handleGiveUp}
                 aria-label="Give up"
                 title="Give up match"
-                className="w-9 h-9 rounded-md border border-turf-border/50 bg-turf-base/80 flex items-center justify-center text-turf-muted hover:text-red-400 transition-colors"
+                className="w-10 h-10 rounded-lg border-2 border-red-500/70 bg-[#2b1010] flex items-center justify-center text-red-200 hover:text-white hover:bg-red-700 transition-colors shadow-sm"
               >
-                <Flag className="w-4 h-4" />
+                <Flag className="w-4 h-4 stroke-[2.5]" />
               </button>
             )}
           </div>
@@ -361,7 +357,7 @@ export default function GameView() {
       </header>
 
       {/* Central Pitch Wordle Board */}
-      <main className="w-full max-w-[760px] mx-auto px-4 py-5 flex-1 flex flex-col justify-start gap-3.5 z-10">
+      <main className="w-full max-w-[760px] mx-auto px-4 py-5 flex-1 flex flex-col justify-start gap-4 z-10">
         {/* Pitch Scouting Drawer / Hint bar */}
         <ScoutDrawer
           clues={cluesData}
@@ -380,13 +376,13 @@ export default function GameView() {
 
           {feedbackMessage && (
             <div
-              className={`mt-2.5 p-3 rounded-lg border text-xs font-bold flex items-center gap-2 animate-clue-enter ${
+              className={`mt-2.5 p-3.5 rounded-xl border-2 text-xs font-black flex items-center gap-2 animate-clue-enter shadow-lg ${
                 isWon
-                  ? 'bg-match-exact/20 border-match-exactBorder text-emerald-300'
-                  : 'bg-red-950/60 border-red-700/50 text-red-200'
+                  ? 'bg-[#15803d] border-emerald-300 text-white'
+                  : 'bg-[#7f1d1d] border-red-400 text-white'
               }`}
             >
-              {isWon ? <Trophy className="w-4 h-4 text-emerald-400 shrink-0" /> : <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />}
+              {isWon ? <Trophy className="w-5 h-5 text-yellow-300 shrink-0 stroke-[2.5]" /> : <AlertCircle className="w-5 h-5 text-red-200 shrink-0 stroke-[2.5]" />}
               <span>{feedbackMessage}</span>
             </div>
           )}
@@ -396,16 +392,16 @@ export default function GameView() {
         <WordleGrid comparisons={comparisons} maxAttempts={6} />
 
         {isGameOver && (
-          <div className="mt-2 p-3 bg-turf-dark border border-turf-border rounded-lg flex items-center justify-between animate-clue-enter">
-            <div className="text-xs">
-              <span className="font-bold text-white">Matchday Concluded! </span>
-              <span className="text-emerald-400 font-mono font-bold">
+          <div className="mt-2 p-4 bg-[#0c2f1a] border-2 border-emerald-400 rounded-xl flex items-center justify-between animate-clue-enter shadow-xl">
+            <div className="text-sm">
+              <span className="font-black text-white">Matchday Concluded! </span>
+              <span className="text-emerald-300 font-mono font-black">
                 {isWon ? `Solved in ${comparisons.length}/6 attempts` : 'Full Time'}
               </span>
             </div>
             <button
               onClick={() => setShowResultsModal(true)}
-              className="px-3 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-headline text-xs font-black uppercase tracking-wider border border-emerald-400"
+              className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-headline text-xs font-black uppercase tracking-wider border-2 border-emerald-300 shadow-md pressable"
             >
               Match Summary Card
             </button>
@@ -413,15 +409,15 @@ export default function GameView() {
         )}
       </main>
 
-      {/* Authentic Touchline Footer with Countdown */}
-      <footer className="w-full border-t border-turf-border/80 py-3 bg-turf-dark/95 z-20">
-        <div className="max-w-[760px] mx-auto px-4 flex items-center justify-between text-xs text-turf-muted font-mono">
+      {/* High-Contrast Touchline Footer with Countdown */}
+      <footer className="w-full border-t-2 border-white/20 py-3.5 bg-[#0c2f1a]/95 z-20 shadow-inner">
+        <div className="max-w-[760px] mx-auto px-4 flex items-center justify-between text-xs text-emerald-100 font-mono font-bold">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span>FOOTYDLE • PITCH VERIFIED</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+            <span className="text-white font-extrabold tracking-wide">FOOTYDLE • PITCH VERIFIED</span>
           </div>
           <span>
-            Next mystery fixture in <strong className="text-white tracking-widest">{countdown}</strong>
+            Next mystery fixture in <strong className="text-yellow-300 tracking-widest font-black text-sm">{countdown}</strong>
           </span>
         </div>
       </footer>

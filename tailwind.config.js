@@ -10,20 +10,20 @@ module.exports = {
     extend: {
       colors: {
         turf: {
-          dark: "#0a2a16",
-          base: "#0c331b",
-          stripe: "#103e22",
-          border: "#1d5231",
-          chalk: "#f8fafc",
-          muted: "#7ca88b",
+          dark: "#0f3a22",
+          base: "#165330",
+          stripe: "#1c633a",
+          border: "#297a49",
+          chalk: "#ffffff",
+          muted: "#bbf7d0", // Much brighter readable mint for labels
         },
         match: {
-          exact: "#16a34a",
-          exactBorder: "#22c55e",
+          exact: "#15803d",
+          exactBorder: "#4ade80",
           close: "#eab308",
-          closeBorder: "#fde047",
-          wrong: "#14281d",
-          wrongBorder: "#1e3b2c",
+          closeBorder: "#fef08a",
+          wrong: "#112418",
+          wrongBorder: "#2a4a37",
         },
       },
       fontFamily: {
