@@ -17,10 +17,10 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
       {/* Column Headers with Bright Crisp Chalk Style */}
       <div className="grid grid-cols-6 gap-2 px-1 text-center font-mono text-xs font-black uppercase tracking-wider text-emerald-200 select-none drop-shadow-sm">
         <div className="col-span-1 text-left pl-2">PLAYER</div>
-        <div className="col-span-1">NAT</div>
+        <div className="col-span-1">COUNTRY</div>
         <div className="col-span-1">LEAGUE</div>
         <div className="col-span-1">CLUB</div>
-        <div className="col-span-1">POS</div>
+        <div className="col-span-1">POSITION</div>
         <div className="col-span-1">AGE</div>
       </div>
 
