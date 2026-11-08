@@ -100,7 +100,7 @@ export function WordleSearch({ onSelectPlayer, disabled, guessedPlayerIds }: Wor
           placeholder={
             disabled
               ? 'Matchday complete'
-              : 'Type footballer name (e.g. De Bruyne, Salah, Bellingham)...'
+              : 'Search footballer by name...'
           }
           className="w-full bg-transparent px-3 py-3.5 text-sm md:text-base text-white placeholder:text-emerald-200/60 focus:outline-none font-bold"
         />
