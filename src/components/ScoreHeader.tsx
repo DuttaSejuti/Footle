@@ -20,37 +20,39 @@ export function ScoreHeader({
   return (
     <header className="w-full max-w-md mx-auto mb-4">
       {/* Brand & Mode Toggle */}
-      <div className="flex items-center justify-between py-2 border-b border-[#1b2b3a] mb-3">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">⚽</span>
+      <div className="flex items-center justify-between py-2.5 border-b border-[#1b2b3a] mb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-xl shadow-inner select-none">
+            ⚽
+          </div>
           <div>
-            <h1 className="text-lg font-black tracking-tight text-white flex items-center gap-1.5">
+            <h1 className="text-base font-black tracking-tight text-slate-100 flex items-center gap-1.5">
               <span>Who&apos;s the Footballer?</span>
             </h1>
-            <p className="text-[10px] text-slate-400">
-              {mode === 'daily' ? `Daily Match • UTC ${dateStr}` : 'Unlimited Practice Match'}
+            <p className="text-[11px] text-slate-400 font-medium">
+              {mode === 'daily' ? `Daily Match • UTC ${dateStr}` : 'Unlimited Training Match'}
             </p>
           </div>
         </div>
 
-        {/* Mode Toggle pills */}
-        <div className="flex bg-[#0e1720] p-1 rounded-xl border border-[#1e3345]">
+        {/* Mode Toggle pills with tactile active state */}
+        <div className="flex bg-[#0b141d] p-1 rounded-xl border border-[#1c2e3d]">
           <button
             onClick={() => onSwitchMode('daily')}
-            className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3 py-1 rounded-lg text-xs font-bold pressable transition-all ${
               mode === 'daily'
-                ? 'bg-emerald-500 text-black shadow-sm'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-emerald-400 text-slate-950 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             Daily
           </button>
           <button
             onClick={() => onSwitchMode('practice')}
-            className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3 py-1 rounded-lg text-xs font-bold pressable transition-all ${
               mode === 'practice'
-                ? 'bg-emerald-500 text-black shadow-sm'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-emerald-400 text-slate-950 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             Practice
@@ -59,14 +61,16 @@ export function ScoreHeader({
       </div>
 
       {/* Progress & Current Potential Points */}
-      <div className="bg-[#121e28] border border-[#1e3345] rounded-xl p-3 flex items-center justify-between shadow-sm">
+      <div className="card-specular rounded-2xl p-3.5 flex items-center justify-between">
         <div className="flex-1 pr-3">
-          <div className="flex justify-between text-xs font-semibold mb-1.5 text-slate-300">
-            <span>Clues Revealed</span>
-            <span className="font-mono text-emerald-400">{cluesUsed} / 6</span>
+          <div className="flex justify-between text-xs font-bold mb-2 text-slate-300">
+            <span className="uppercase text-[10px] tracking-wider text-slate-400 font-semibold">
+              Clues Unlocked
+            </span>
+            <span className="font-mono text-emerald-400 font-bold">{cluesUsed} / 6</span>
           </div>
 
-          {/* 6 Step Progress Indicator */}
+          {/* 6 Step Progress Indicator with subtle glow on active */}
           <div className="grid grid-cols-6 gap-1.5 h-2">
             {[1, 2, 3, 4, 5, 6].map((step) => {
               const isRevealed = step <= cluesUsed;
@@ -76,10 +80,10 @@ export function ScoreHeader({
                   key={step}
                   className={`rounded-full transition-all duration-300 ${
                     isCurrent
-                      ? 'bg-emerald-400 ring-2 ring-emerald-400/40'
+                      ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]'
                       : isRevealed
                       ? 'bg-emerald-600'
-                      : 'bg-[#1e3345]'
+                      : 'bg-[#182735]'
                   }`}
                 />
               );
@@ -87,12 +91,12 @@ export function ScoreHeader({
           </div>
         </div>
 
-        <div className="pl-3 border-l border-[#1e3345] text-right min-w-[70px]">
-          <span className="text-[10px] text-slate-400 uppercase tracking-wider block">
+        <div className="pl-3.5 border-l border-[#1f3242] text-right min-w-[76px]">
+          <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">
             Win Value
           </span>
-          <span className="text-xl font-extrabold text-emerald-400">
-            {scoreIfGuessedNow} <span className="text-xs text-slate-400 font-normal">pts</span>
+          <span className="text-xl font-black text-emerald-400 tracking-tight">
+            {scoreIfGuessedNow} <span className="text-xs text-slate-400 font-semibold">pts</span>
           </span>
         </div>
       </div>
