@@ -38,27 +38,21 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
             >
               {/* Player Cell */}
               <div
-                className={`col-span-1 bg-[#0b2917] border-2 rounded p-1.5 sm:p-2 flex flex-col justify-center text-left min-w-0 tactic-tile ${
+                className={`col-span-1 bg-[#0b2917] border-2 rounded p-1.5 sm:p-2 flex items-center text-left min-w-0 tactic-tile ${
                   isWin ? 'border-emerald-400 bg-[#0d3b1e]' : 'border-[#297a49]'
                 }`}
               >
-                <div className="flex items-center gap-1">
-                  {isWin && <Check className="w-3.5 h-3.5 text-emerald-300 shrink-0 stroke-[3]" />}
+                <div className="flex items-center gap-1.5 min-w-0 w-full">
+                  {isWin && <Check className="w-4 h-4 text-emerald-300 shrink-0 stroke-[3]" />}
                   <span
-                    className={`font-headline font-black text-xs sm:text-sm truncate leading-tight ${
+                    title={comp.player.displayName}
+                    className={`font-headline font-black text-xs sm:text-sm line-clamp-2 leading-tight break-words ${
                       isWin ? 'text-emerald-200' : 'text-white'
                     }`}
                   >
                     {comp.player.displayName}
                   </span>
                 </div>
-                <span
-                  className={`font-mono text-[10px] sm:text-[11px] truncate font-bold ${
-                    isWin ? 'text-emerald-300' : 'text-emerald-300/80'
-                  }`}
-                >
-                  {isWin ? `#${idx + 1} Solved!` : `#${idx + 1} Guess`}
-                </span>
               </div>
 
               {/* NAT */}
