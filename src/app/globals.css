@@ -71,6 +71,39 @@
   animation: shakeSoft 320ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
+/* Goal kick / celebration animation */
+@keyframes goalKick {
+  0% {
+    transform: scale(0.3) rotate(-180deg) translateY(60px);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15) rotate(15deg) translateY(-8px);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.95) rotate(-5deg) translateY(2px);
+  }
+  100% {
+    transform: scale(1) rotate(0deg) translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-goal-kick {
+  animation: goalKick 650ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Stadium net ripple effect */
+@keyframes netRipple {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+.animate-net-ripple {
+  animation: netRipple 1.2s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;

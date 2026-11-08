@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Trophy, Share2, Check, RotateCcw, Calendar, ExternalLink } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Share2, Check, RotateCcw, ExternalLink } from 'lucide-react';
 import { Footballer } from '@/types/footballer';
 import confetti from 'canvas-confetti';
 
@@ -30,16 +30,32 @@ export function ResultsModal({
 }: ResultsModalProps) {
   const [copied, setCopied] = useState(false);
 
-  if (!isOpen) return null;
+  // Trigger celebration confetti EXACTLY ONCE or TWICE (not looping)
+  useEffect(() => {
+    if (isOpen && isWon && typeof window !== 'undefined') {
+      // Burst 1: immediate football turf celebration
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.65 },
+        colors: ['#16a34a', '#eab308', '#ffffff'],
+      });
 
-  // Trigger celebration confetti on win
-  if (isWon && typeof window !== 'undefined') {
-    confetti({
-      particleCount: 60,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
-  }
+      // Burst 2: second subtle celebratory volley 300ms later, then stop completely
+      const timer = setTimeout(() => {
+        confetti({
+          particleCount: 40,
+          spread: 80,
+          origin: { y: 0.55 },
+          colors: ['#22c55e', '#facc15', '#f8fafc'],
+        });
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, isWon]);
+
+  if (!isOpen) return null;
 
   const generateShareText = () => {
     const squares = Array.from({ length: 6 })
@@ -50,13 +66,15 @@ export function ResultsModal({
       })
       .join('');
 
-    const title = gameMode === 'daily' ? `Who's the Footballer? Daily (${dateStr})` : `Who's the Footballer? (Practice)`;
-    return `${title}\nScore: ${score}/6 ⚽\nClues: ${cluesUsed}/6\n${squares}\nPlay at: https://whosthefootballer.app`;
+    const title =
+      gameMode === 'daily'
+        ? `FOOTYDLE Daily (#${dateStr})`
+        : `FOOTYDLE (Training Match)`;
+    return `${title}\nScore: ${score}/6 ⚽\nAttempts: ${cluesUsed}/6\n${squares}\nPlay at: https://whosthefootballer.app`;
   };
 
   const handleShare = async () => {
     const text = generateShareText();
-    // track share click in analytics
     try {
       fetch('/api/analytics', {
         method: 'POST',
@@ -68,13 +86,11 @@ export function ResultsModal({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Who's the Footballer?",
+          title: 'FOOTYDLE',
           text: text,
         });
         return;
-      } catch (err) {
-        // Fall back to clipboard
-      }
+      } catch (err) {}
     }
 
     try {
@@ -85,34 +101,39 @@ export function ResultsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-md bg-[#121e28] border border-[#1e3345] rounded-2xl p-6 shadow-2xl text-center">
-        {/* Header Badge */}
-        <div className="mx-auto w-14 h-14 rounded-2xl flex items-center justify-center mb-3 shadow-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400">
-          <Trophy className="w-8 h-8" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn">
+      <div className="relative w-full max-w-md bg-[#0a2615] border-2 border-emerald-400/80 rounded-2xl p-6 shadow-2xl text-center">
+        {/* Football Celebration Badge with Goal Kick Animation */}
+        <div className="relative mx-auto w-20 h-20 flex items-center justify-center mb-3">
+          {/* Subtle goal net ripple ring */}
+          <div className="absolute inset-0 rounded-full border-2 border-emerald-400/40 animate-net-ripple" />
+          <div className="w-16 h-16 rounded-full bg-[#144f2c] border-2 border-emerald-300 flex items-center justify-center shadow-lg animate-goal-kick">
+            <span className="text-3xl select-none">{isWon ? '⚽' : '🧤'}</span>
+          </div>
         </div>
 
-        <h2 className="text-2xl font-black text-white">
-          {isWon ? 'Goooaaal! Spot on!' : 'Full Time! Better luck tomorrow!'}
+        {/* Stadium Goal Announcement */}
+        <h2 className="text-2xl font-headline font-black text-white tracking-wide uppercase">
+          {isWon ? 'GOAL! Top Bins!' : 'Full Time Whistle!'}
         </h2>
 
-        <p className="text-sm text-slate-400 mt-1 mb-5">
+        <p className="text-xs text-emerald-200 font-bold mt-1 mb-5">
           {isWon
-            ? `You cracked the mystery in ${cluesUsed} clue${cluesUsed > 1 ? 's' : ''}!`
-            : 'You surrendered this match, but the mystery is solved!'}
+            ? `Tactical masterclass! Identified in ${cluesUsed}/6 substitutions.`
+            : 'Match conceded, but here is today\'s verified footballer!'}
         </p>
 
         {/* Revealed Player Card */}
-        <div className="bg-[#0b1319] border border-[#1e3345] rounded-xl p-4 mb-5 text-left flex items-center gap-4">
+        <div className="bg-[#0e331c] border-2 border-emerald-400/70 rounded-xl p-4 mb-5 text-left flex items-center gap-4 shadow-inner">
           {mysteryPlayer.imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={mysteryPlayer.imageUrl}
               alt={mysteryPlayer.displayName}
-              className="w-16 h-16 rounded-xl object-cover border border-emerald-500/40"
+              className="w-16 h-16 rounded-lg object-cover border-2 border-emerald-400"
             />
           ) : (
-            <div className="w-16 h-16 rounded-xl bg-[#172735] border border-[#1e3345] flex items-center justify-center text-3xl">
+            <div className="w-16 h-16 rounded-lg bg-[#165330] border-2 border-emerald-400 flex items-center justify-center text-3xl">
               {mysteryPlayer.flagEmoji}
             </div>
           )}
@@ -120,42 +141,45 @@ export function ResultsModal({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5">
               <span className="text-lg">{mysteryPlayer.flagEmoji}</span>
-              <h3 className="text-lg font-bold text-white truncate">
+              <h3 className="text-base font-black text-white truncate">
                 {mysteryPlayer.displayName}
               </h3>
             </div>
-            <p className="text-xs text-slate-400 truncate">
+            <p className="text-xs text-emerald-100 font-bold truncate mt-0.5">
               {mysteryPlayer.position} • {mysteryPlayer.currentClub}
+            </p>
+            <p className="text-[11px] text-emerald-300 font-mono font-semibold truncate">
+              {mysteryPlayer.league} • {mysteryPlayer.age} years old
             </p>
             {mysteryPlayer.sourceUrl && (
               <a
                 href={mysteryPlayer.sourceUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 text-[11px] text-emerald-400 hover:underline mt-1"
+                className="inline-flex items-center gap-1 text-[11px] text-yellow-300 hover:underline mt-1 font-bold"
               >
-                Learn player bio <ExternalLink className="w-3 h-3" />
+                Official player bio <ExternalLink className="w-3 h-3" />
               </a>
             )}
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <div className="bg-[#0b1319] border border-[#1e3345] rounded-xl p-3">
-            <span className="text-xs text-slate-400 uppercase tracking-wider block mb-1">
-              Final Score
+        {/* Tactical Match Stats Grid */}
+        <div className="grid grid-cols-2 gap-3 mb-5">
+          <div className="bg-[#0e331c] border-2 border-[#297a49] rounded-xl p-3 shadow-sm">
+            <span className="text-[10px] text-emerald-200 font-black uppercase tracking-wider block mb-1">
+              Match Points
             </span>
-            <span className="text-2xl font-extrabold text-emerald-400">
+            <span className="text-2xl font-headline font-black text-emerald-300">
               {score} / 6
             </span>
           </div>
 
-          <div className="bg-[#0b1319] border border-[#1e3345] rounded-xl p-3">
-            <span className="text-xs text-slate-400 uppercase tracking-wider block mb-1">
-              Clues Used
+          <div className="bg-[#0e331c] border-2 border-[#297a49] rounded-xl p-3 shadow-sm">
+            <span className="text-[10px] text-emerald-200 font-black uppercase tracking-wider block mb-1">
+              Subs Used
             </span>
-            <span className="text-2xl font-extrabold text-amber-400">
+            <span className="text-2xl font-headline font-black text-yellow-300">
               {cluesUsed} / 6
             </span>
           </div>
@@ -165,15 +189,15 @@ export function ResultsModal({
         <div className="space-y-2.5">
           <button
             onClick={handleShare}
-            className="w-full py-3.5 px-4 bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] transition-all rounded-xl text-black font-extrabold flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20"
+            className="w-full py-3.5 px-4 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] transition-all rounded-xl text-black font-black uppercase tracking-wider text-xs flex items-center justify-center gap-2 shadow-lg border-2 border-emerald-300 pressable"
           >
             {copied ? (
               <>
-                <Check className="w-5 h-5 text-black" /> Copied to Clipboard!
+                <Check className="w-4 h-4 stroke-[3]" /> Result Copied!
               </>
             ) : (
               <>
-                <Share2 className="w-5 h-5 text-black" /> Share Result
+                <Share2 className="w-4 h-4 stroke-[3]" /> Share Matchday Result
               </>
             )}
           </button>
@@ -184,18 +208,18 @@ export function ResultsModal({
                 onPlayAgainPractice();
                 onClose();
               }}
-              className="w-full py-3 px-4 bg-[#1b2b3a] hover:bg-[#23384d] rounded-xl text-white font-semibold flex items-center justify-center gap-2 border border-[#2e475e] transition-colors"
+              className="w-full py-3 px-4 bg-[#144f2c] hover:bg-[#1a633a] rounded-xl text-white font-black text-xs flex items-center justify-center gap-2 border-2 border-emerald-400/80 transition-colors pressable"
             >
-              <RotateCcw className="w-4 h-4 text-emerald-400" />
-              Play Another Footballer (Practice)
+              <RotateCcw className="w-4 h-4 text-emerald-300 stroke-[2.5]" />
+              New Training Fixture
             </button>
           )}
 
           <button
             onClick={onClose}
-            className="w-full py-2.5 text-xs text-slate-400 hover:text-white transition-colors"
+            className="w-full py-2 text-xs text-emerald-200 hover:text-white transition-colors font-bold"
           >
-            Review Clues
+            Review Pitch Board
           </button>
         </div>
       </div>
