@@ -257,22 +257,6 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
           );
         })}
       </div>
-
-      {/* Legend: Tactical Pitch Indicators with high contrast text */}
-      <div className="w-full flex items-center justify-center gap-5 sm:gap-8 pt-3.5 pb-1 border-t-2 border-white/20 text-xs font-mono text-emerald-100 select-none font-bold">
-        <div className="flex items-center gap-1.5">
-          <span className="w-4 h-4 rounded bg-[#15803d] border-2 border-emerald-400 inline-block shadow-sm" />
-          <span className="text-white font-extrabold">🟩 Exact Match</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="w-4 h-4 rounded bg-[#eab308] border-2 border-[#fef08a] inline-block shadow-sm" />
-          <span className="text-white font-extrabold">🟨 Close / Direction</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="w-4 h-4 rounded bg-[#0f1f15] border-2 border-[#294a34] inline-block shadow-sm" />
-          <span className="text-white font-extrabold">⬛ Incorrect</span>
-        </div>
-      </div>
     </div>
   );
 }
