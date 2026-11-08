@@ -1,0 +1,30 @@
+{
+  "name": "footle",
+  "version": "1.0.0",
+  "description": "Who's the Footballer? Daily Football Player Guessing Game",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "node scripts/test-core.js"
+  },
+  "keywords": ["football", "wordle", "trivia", "quiz"],
+  "dependencies": {
+    "canvas-confetti": "^1.9.4",
+    "lucide-react": "^1.70.0",
+    "next": "^16.4.5",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "autoprefixer": "^10.6.2",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^7.0.2"
+  }
+}
