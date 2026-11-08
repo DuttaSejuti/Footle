@@ -7,7 +7,7 @@ import { WordleGrid } from '@/components/WordleGrid';
 import { ResultsModal } from '@/components/ResultsModal';
 import { Footballer, GuessComparison } from '@/types/footballer';
 import { getUtcTodayDateString } from '@/lib/game-logic';
-import { HelpCircle, Trophy, AlertCircle } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 
 export default function GameView() {
   const [currentDateStr, setCurrentDateStr] = useState<string>('');
@@ -260,19 +260,6 @@ export default function GameView() {
             disabled={isGameOver || loading}
             guessedPlayerIds={comparisons.map((c) => c.player.id)}
           />
-
-          {feedbackMessage && (
-            <div
-              className={`mt-2.5 p-3.5 rounded-xl border-2 text-xs font-black flex items-center gap-2 animate-clue-enter shadow-lg ${
-                isWon
-                  ? 'bg-[#15803d] border-emerald-300 text-white'
-                  : 'bg-[#7f1d1d] border-red-400 text-white'
-              }`}
-            >
-              {isWon ? <Trophy className="w-5 h-5 text-yellow-300 shrink-0 stroke-[2.5]" /> : <AlertCircle className="w-5 h-5 text-red-200 shrink-0 stroke-[2.5]" />}
-              <span>{feedbackMessage}</span>
-            </div>
-          )}
         </div>
 
         {/* 6-ROW GUESS MATRIX */}
