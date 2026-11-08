@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Share2, Check, ExternalLink } from 'lucide-react';
+import { Share2, Check } from 'lucide-react';
 import { Footballer } from '@/types/footballer';
 import confetti from 'canvas-confetti';
 
@@ -112,44 +112,40 @@ export function ResultsModal({
             : 'Match conceded, but here is today\'s verified footballer!'}
         </p>
 
-        {/* Revealed Player Card */}
-        <div className="bg-[#0e331c] border-2 border-emerald-400/70 rounded-xl p-4 mb-5 text-left flex items-center gap-4 shadow-inner">
-          {mysteryPlayer.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={mysteryPlayer.imageUrl}
-              alt={mysteryPlayer.displayName}
-              className="w-16 h-16 rounded-lg object-cover border-2 border-emerald-400"
-            />
-          ) : (
-            <div className="w-16 h-16 rounded-lg bg-[#165330] border-2 border-emerald-400 flex items-center justify-center text-3xl">
-              {mysteryPlayer.flagEmoji}
-            </div>
-          )}
+        {/* Revealed Player Showcase Card */}
+        <div className="bg-[#0e331c] border-2 border-emerald-400 rounded-2xl p-5 mb-5 text-center flex flex-col items-center gap-3 shadow-xl">
+          {/* Centered Player Image Box */}
+          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-[#081f10] border-3 border-emerald-400 overflow-hidden shadow-lg flex items-center justify-center relative">
+            {mysteryPlayer.imageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={mysteryPlayer.imageUrl}
+                alt={mysteryPlayer.displayName}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center bg-[#0d2a17] text-white">
+                <span className="text-4xl">{mysteryPlayer.flagEmoji}</span>
+                <span className="text-[10px] text-emerald-300/80 font-mono font-bold mt-1 uppercase tracking-wider">
+                  No Photo
+                </span>
+              </div>
+            )}
+          </div>
 
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className="text-lg">{mysteryPlayer.flagEmoji}</span>
-              <h3 className="text-base font-black text-white truncate">
+          <div className="w-full">
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-xl">{mysteryPlayer.flagEmoji}</span>
+              <h3 className="text-lg sm:text-xl font-headline font-black text-white">
                 {mysteryPlayer.displayName}
               </h3>
             </div>
-            <p className="text-xs text-emerald-100 font-bold truncate mt-0.5">
+            <p className="text-xs text-emerald-200 font-bold mt-1">
               {mysteryPlayer.position} • {mysteryPlayer.currentClub}
             </p>
-            <p className="text-[11px] text-emerald-300 font-mono font-semibold truncate">
+            <p className="text-xs text-emerald-300 font-mono font-bold mt-0.5">
               {mysteryPlayer.league} • {mysteryPlayer.age} years old
             </p>
-            {mysteryPlayer.sourceUrl && (
-              <a
-                href={mysteryPlayer.sourceUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 text-[11px] text-yellow-300 hover:underline mt-1 font-bold"
-              >
-                Official player bio <ExternalLink className="w-3 h-3" />
-              </a>
-            )}
           </div>
         </div>
 
