@@ -6,8 +6,12 @@ export interface Footballer {
   nationality: string;
   countryCode: string; // ISO 2-letter for flags, e.g. "AR", "PT", "FR"
   flagEmoji: string;
+  league: string; // e.g. "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1", "MLS", "Saudi Pro"
   position: 'Goalkeeper' | 'Defender' | 'Midfielder' | 'Forward';
+  positionAbbr: 'GK' | 'DEF' | 'MID' | 'FWD';
   currentClub: string; // or last club if retired
+  clubAbbr: string; // e.g. "MCI", "RMA", "BAR", "LIV", "BAY", "MIA"
+  age: number;
   isRetired: boolean;
   previousClubs: string[]; // Chronological previous clubs
   achievements: string[]; // Major trophies / milestones
@@ -19,41 +23,58 @@ export interface Footballer {
   isActive: boolean;
 }
 
+export type MatchStatus = 'correct' | 'partial' | 'wrong' | 'higher' | 'lower';
+
+export interface GuessComparison {
+  player: {
+    id: string;
+    displayName: string;
+    flagEmoji: string;
+    imageUrl?: string;
+  };
+  nationality: {
+    value: string;
+    code: string;
+    flag: string;
+    status: MatchStatus;
+  };
+  league: {
+    value: string;
+    status: MatchStatus;
+  };
+  club: {
+    value: string;
+    abbr: string;
+    status: MatchStatus;
+  };
+  position: {
+    value: string;
+    abbr: string;
+    status: MatchStatus;
+  };
+  age: {
+    value: number;
+    status: MatchStatus; // 'correct', 'higher' (target is older/higher), 'lower' (target is younger/lower)
+    diff: number;
+  };
+  isExactMatch: boolean;
+}
+
 export interface GuessResult {
   isCorrect: boolean;
   score: number;
   cluesUsed: number;
-  mysteryPlayer?: Footballer; // revealed on win or give up
-  message: string;
-}
-
-export interface DailyPlayerInfo {
-  date: string; // YYYY-MM-DD (UTC)
-  revealedClues: {
-    clue1Nationality: { nationality: string; countryCode: string; flagEmoji: string };
-    clue2Position?: string;
-    clue3CurrentClub?: { club: string; isRetired: boolean };
-    clue4PreviousClubs?: string[];
-    clue5Achievements?: string[];
-    clue6Photo?: {
-      imageUrl?: string;
-      imageAttribution?: string;
-      imageLicense?: string;
-      blurStage: number; // 1 to 6
-    };
-  };
-  currentClueIndex: number; // 1 to 6
-  isGameOver: boolean;
-  solved: boolean;
-  pointsAwarded: number;
+  comparison?: GuessComparison;
   mysteryPlayer?: Footballer;
+  message: string;
 }
 
 export interface UserGameState {
   date: string;
   mode: 'daily' | 'practice';
   cluesRevealed: number; // 1 to 6
-  guesses: string[]; // footballer IDs or display names
+  guesses: string[]; // names guessed
+  comparisons: GuessComparison[]; // Wordle comparison rows
   isGameOver: boolean;
   isWon: boolean;
   score: number;

@@ -1,26 +1,16 @@
-import { Footballer } from '@/types/footballer';
+import { Footballer, GuessComparison, MatchStatus } from '@/types/footballer';
 
-/**
- * Normalizes string:
- * - lowercase
- * - strips diacritics / accents (e.g., Modrić -> modric, Mbappé -> mbappe)
- * - removes punctuation and excess spaces
- */
 export function normalizeString(str: string): string {
   if (!str) return '';
   return str
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // remove accent marks
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, ' ') // convert special chars to space
+    .replace(/[^a-z0-9\s]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
 
-/**
- * Validates a guess against a mystery player.
- * Checks fullName, displayName, and all alternativeNames.
- */
 export function isCorrectGuess(guess: string, mysteryPlayer: Footballer): boolean {
   const normGuess = normalizeString(guess);
   if (!normGuess) return false;
@@ -31,25 +21,9 @@ export function isCorrectGuess(guess: string, mysteryPlayer: Footballer): boolea
     ...mysteryPlayer.alternativeNames,
   ];
 
-  for (const name of candidateNames) {
-    if (normalizeString(name) === normGuess) {
-      return true;
-    }
-  }
-
-  return false;
+  return candidateNames.some((name) => normalizeString(name) === normGuess);
 }
 
-/**
- * Calculate score according to specifications:
- * - Guess after clue 1: 6 points
- * - Guess after clue 2: 5 points
- * - Guess after clue 3: 4 points
- * - Guess after clue 4: 3 points
- * - Guess after clue 5: 2 points
- * - Guess after clue 6: 1 point
- * - Give up or unsolved: 0 points
- */
 export function calculateScore(cluesUsed: number, isWon: boolean): number {
   if (!isWon) return 0;
   if (cluesUsed <= 1) return 6;
@@ -60,10 +34,94 @@ export function calculateScore(cluesUsed: number, isWon: boolean): number {
   return 1;
 }
 
-/**
- * Returns UTC date string 'YYYY-MM-DD'
- */
 export function getUtcTodayDateString(): string {
   const now = new Date();
   return now.toISOString().split('T')[0];
+}
+
+/**
+ * Wordle / Poeltl Comparison Engine
+ * Compares guessed player vs target mystery player
+ */
+export function compareFootballers(guessed: Footballer, target: Footballer): GuessComparison {
+  // 1. Nationality
+  const natStatus: MatchStatus =
+    normalizeString(guessed.nationality) === normalizeString(target.nationality)
+      ? 'correct'
+      : 'wrong';
+
+  // 2. League
+  const leagueStatus: MatchStatus =
+    normalizeString(guessed.league) === normalizeString(target.league)
+      ? 'correct'
+      : 'wrong';
+
+  // 3. Club
+  const clubStatus: MatchStatus =
+    normalizeString(guessed.currentClub) === normalizeString(target.currentClub)
+      ? 'correct'
+      : 'wrong';
+
+  // 4. Position
+  let posStatus: MatchStatus = 'wrong';
+  if (guessed.position === target.position) {
+    posStatus = 'correct';
+  } else if (
+    (guessed.position === 'Midfielder' && target.position === 'Forward') ||
+    (guessed.position === 'Forward' && target.position === 'Midfielder') ||
+    (guessed.position === 'Defender' && target.position === 'Midfielder') ||
+    (guessed.position === 'Midfielder' && target.position === 'Defender')
+  ) {
+    posStatus = 'partial'; // Adjacent pitch tactical line
+  }
+
+  // 5. Age
+  let ageStatus: MatchStatus = 'correct';
+  if (guessed.age < target.age) {
+    ageStatus = 'higher'; // Target player is older ⬆️
+  } else if (guessed.age > target.age) {
+    ageStatus = 'lower'; // Target player is younger ⬇️
+  }
+
+  const isExact =
+    natStatus === 'correct' &&
+    leagueStatus === 'correct' &&
+    clubStatus === 'correct' &&
+    posStatus === 'correct' &&
+    ageStatus === 'correct';
+
+  return {
+    player: {
+      id: guessed.id,
+      displayName: guessed.displayName,
+      flagEmoji: guessed.flagEmoji,
+      imageUrl: guessed.imageUrl,
+    },
+    nationality: {
+      value: guessed.nationality,
+      code: guessed.countryCode,
+      flag: guessed.flagEmoji,
+      status: natStatus,
+    },
+    league: {
+      value: guessed.league,
+      status: leagueStatus,
+    },
+    club: {
+      value: guessed.currentClub,
+      abbr: guessed.clubAbbr || guessed.currentClub.substring(0, 3).toUpperCase(),
+      status: clubStatus,
+    },
+    position: {
+      value: guessed.position,
+      abbr: guessed.positionAbbr || guessed.position.substring(0, 3).toUpperCase(),
+      status: posStatus,
+    },
+    age: {
+      value: guessed.age,
+      status: ageStatus,
+      diff: target.age - guessed.age,
+    },
+    isExactMatch: isExact,
+  };
 }

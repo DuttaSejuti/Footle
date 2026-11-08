@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getPlayers, getPlayerById } from '@/lib/server-storage';
-import { isCorrectGuess, calculateScore } from '@/lib/game-logic';
+import { isCorrectGuess, calculateScore, compareFootballers } from '@/lib/game-logic';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -9,7 +9,6 @@ export async function GET(request: Request) {
 
   const players = getPlayers().filter((p) => p.isActive);
   if (!playerId) {
-    // pick random active player
     const randomPlayer = players[Math.floor(Math.random() * players.length)];
     playerId = randomPlayer.id;
   }
@@ -55,10 +54,10 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { playerId, guess, cluesUsed, giveUp } = body;
+    const { playerId, guess, guessedPlayerId, cluesUsed, giveUp } = body;
 
-    const player = getPlayerById(playerId);
-    if (!player) {
+    const targetPlayer = getPlayerById(playerId);
+    if (!targetPlayer) {
       return NextResponse.json({ error: 'Player not found' }, { status: 404 });
     }
 
@@ -68,12 +67,23 @@ export async function POST(request: Request) {
         score: 0,
         cluesUsed: cluesUsed || 6,
         isGameOver: true,
-        mysteryPlayer: player,
-        message: `You gave up! The footballer was ${player.displayName}.`,
+        mysteryPlayer: targetPlayer,
+        message: `Match Over! The mystery footballer was ${targetPlayer.displayName}.`,
       });
     }
 
-    const won = isCorrectGuess(guess, player);
+    let guessedPlayer = guessedPlayerId ? getPlayerById(guessedPlayerId) : undefined;
+    if (!guessedPlayer && guess) {
+      const all = getPlayers();
+      guessedPlayer = all.find((p) => isCorrectGuess(guess, p));
+    }
+
+    let comparison = undefined;
+    if (guessedPlayer) {
+      comparison = compareFootballers(guessedPlayer, targetPlayer);
+    }
+
+    const won = guessedPlayer ? isCorrectGuess(guessedPlayer.displayName, targetPlayer) : isCorrectGuess(guess, targetPlayer);
     const score = calculateScore(cluesUsed || 1, won);
 
     return NextResponse.json({
@@ -81,8 +91,9 @@ export async function POST(request: Request) {
       score: score,
       cluesUsed: cluesUsed || 1,
       isGameOver: won,
-      mysteryPlayer: won ? player : undefined,
-      message: won ? `Brilliant! That is ${player.displayName}!` : 'Not quite right. Try again or reveal the next clue!',
+      comparison,
+      mysteryPlayer: won ? targetPlayer : undefined,
+      message: won ? `Brilliant! That is ${targetPlayer.displayName}!` : 'Keep going! Check the tile matches below.',
     });
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'Invalid request' }, { status: 400 });
