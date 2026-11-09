@@ -89,8 +89,12 @@ POSITION_MAP = {
     'Goalkeeper': ('Goalkeeper', 'GK'),
 }
 
+import unicodedata
+
 def clean_slug(name):
-    s = name.lower()
+    # Normalize unicode accents (e.g., Godín -> Godin, Agüero -> Aguero)
+    s = ''.join(c for c in unicodedata.normalize('NFD', name) if unicodedata.category(c) != 'Mn')
+    s = s.lower()
     s = re.sub(r'[^a-z0-9]+', '-', s)
     return s.strip('-')
 
