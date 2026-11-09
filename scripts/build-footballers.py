@@ -213,24 +213,35 @@ with open('data/transfermarkt/players.csv', mode='r', encoding='utf-8') as f:
             'currentMarketValue': current_mv,
         })
 
-# Sort by notoriety (highest market value first)
-players.sort(key=lambda p: (p['currentMarketValue'], p['highestMarketValue']), reverse=True)
+# Import curated 1980s+ icons and all-time legends
+try:
+    from legends_data import LEGENDS
+except ImportError:
+    LEGENDS = []
 
-# Deduplicate by slug
+# Deduplicate by slug, placing legends first
 seen = set()
-unique_players = []
+final_players = []
+
+# 1. Add all-time and 1980s+ icons first
+for legend in LEGENDS:
+    if legend['id'] not in seen:
+        seen.add(legend['id'])
+        final_players.append(legend)
+
+# 2. Add modern players sorted by notoriety
+players.sort(key=lambda p: (p['currentMarketValue'], p['highestMarketValue']), reverse=True)
 for p in players:
     if p['id'] not in seen:
         seen.add(p['id'])
         del p['highestMarketValue']
         del p['currentMarketValue']
-        unique_players.append(p)
+        final_players.append(p)
+        if len(final_players) >= 1600:
+            break
 
-# Take top 1,500 most famous active modern players
-top_players = unique_players[:1500]
-
-print(f"Total processed: {len(top_players)} footballers.")
+print(f"Total processed: {len(final_players)} footballers (including {len(LEGENDS)} icons).")
 with open('src/data/footballers.json', 'w', encoding='utf-8') as f:
-    json.dump(top_players, f, indent=2, ensure_ascii=False)
+    json.dump(final_players, f, indent=2, ensure_ascii=False)
 
 print("Saved to src/data/footballers.json successfully!")
