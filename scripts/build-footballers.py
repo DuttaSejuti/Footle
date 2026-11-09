@@ -163,8 +163,11 @@ with open('data/transfermarkt/players.csv', mode='r', encoding='utf-8') as f:
         age = 25
         if dob_str:
             try:
-                birth_year = int(dob_str.split('-')[0])
-                age = now_year - birth_year
+                dob_clean = dob_str.split()[0]
+                dt = datetime.strptime(dob_clean, '%Y-%m-%d')
+                now = datetime.now()
+                # Exact age accounting for whether birthday has passed this year
+                age = now.year - dt.year - ((now.month, now.day) < (dt.month, dt.day))
             except:
                 pass
         
