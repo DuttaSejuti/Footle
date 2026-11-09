@@ -98,13 +98,85 @@ def clean_slug(name):
     s = re.sub(r'[^a-z0-9]+', '-', s)
     return s.strip('-')
 
+CANONICAL_CLUBS = {
+    'fc barcelona': 'Barcelona',
+    'barcelona': 'Barcelona',
+    'barca': 'Barcelona',
+    'atletico de madrid': 'Atlético Madrid',
+    'atletico madrid': 'Atlético Madrid',
+    'atletico': 'Atlético Madrid',
+    'real madrid cf': 'Real Madrid',
+    'real madrid': 'Real Madrid',
+    'manchester united': 'Manchester United',
+    'man utd': 'Manchester United',
+    'manchester city': 'Manchester City',
+    'man city': 'Manchester City',
+    'paris saint-germain': 'Paris Saint-Germain',
+    'paris saint germain': 'Paris Saint-Germain',
+    'psg': 'Paris Saint-Germain',
+    'bayern munich': 'Bayern Munich',
+    'bayern munchen': 'Bayern Munich',
+    'bayern': 'Bayern Munich',
+    'inter milan': 'Inter Milan',
+    'internazionale': 'Inter Milan',
+    'inter': 'Inter Milan',
+    'ac milan': 'AC Milan',
+    'milan': 'AC Milan',
+    'juventus fc': 'Juventus',
+    'juventus': 'Juventus',
+    'juve': 'Juventus',
+    'chelsea fc': 'Chelsea',
+    'chelsea': 'Chelsea',
+    'arsenal fc': 'Arsenal',
+    'arsenal': 'Arsenal',
+    'liverpool fc': 'Liverpool',
+    'liverpool': 'Liverpool',
+    'tottenham hotspur': 'Tottenham Hotspur',
+    'tottenham': 'Tottenham Hotspur',
+    'spurs': 'Tottenham Hotspur',
+    'borussia dortmund': 'Borussia Dortmund',
+    'dortmund': 'Borussia Dortmund',
+    'bvb': 'Borussia Dortmund',
+    'al-nassr fc': 'Al-Nassr',
+    'al-nassr': 'Al-Nassr',
+    'al nassr': 'Al-Nassr',
+    'al-nassr football club': 'Al-Nassr',
+    'al-hilal': 'Al-Hilal',
+    'al hilal': 'Al-Hilal',
+    'al-hilal saudi fc': 'Al-Hilal',
+    'inter miami cf': 'Inter Miami',
+    'inter miami': 'Inter Miami',
+    'miami': 'Inter Miami',
+    'club internacional de futbol miami': 'Inter Miami',
+    'as roma': 'Roma',
+    'roma': 'Roma',
+    'ssc napoli': 'Napoli',
+    'napoli': 'Napoli',
+    'sporting cp': 'Sporting CP',
+    'sporting lisbon': 'Sporting CP',
+    'sporting': 'Sporting CP',
+    'sl benfica': 'Benfica',
+    'benfica': 'Benfica',
+    'fc porto': 'Porto',
+    'porto': 'Porto',
+    'afc ajax': 'Ajax',
+    'ajax amsterdam': 'Ajax',
+    'ajax': 'Ajax',
+}
+
 def clean_club_name(name):
     if not name:
         return ''
+    # Filter out youth, academy, and reserve teams
+    if re.search(r'\b(U\d+|Yth|Youth|Jgd|Sub-\d+|JV|Academy|II|B|C)\b', name, flags=re.IGNORECASE):
+        return ''
     # Remove common corporate/legal suffixes
     name = re.sub(r'\s+(S\.p\.A\.|F\.C\.|FC|CF|C\.F\.|SAD|plc|e\.V\.|LLC)', '', name, flags=re.IGNORECASE)
-    name = re.sub(r'^(Società Sportiva|Associazione Calcio|Futbol Club)\s+', '', name, flags=re.IGNORECASE)
-    return name.strip()
+    name = re.sub(r'^(Società Sportiva|Associazione Calcio|Futbol Club|Club Internacional de Fútbol)\s+', '', name, flags=re.IGNORECASE)
+    name = name.strip()
+    # Canonicalize standard aliases
+    k = name.lower()
+    return CANONICAL_CLUBS.get(k, name)
 
 def make_abbr(name):
     words = re.findall(r'[a-zA-Z]+', name)
@@ -202,9 +274,22 @@ with open('data/transfermarkt/players.csv', mode='r', encoding='utf-8') as f:
         code, flag = COUNTRY_FLAGS.get(country, ('UN', '⚽'))
 
         pid = row['player_id']
-        all_clubs = player_transfers.get(pid, set())
-        # Filter previous clubs (excluding current club)
-        previous_clubs = [c for c in all_clubs if c.lower() != current_club.lower()][:8]
+        raw_clubs = player_transfers.get(pid, set())
+        # Canonicalize previous clubs and remove current club & youth variations
+        norm_curr = current_club.lower()
+        cleaned_prev = []
+        seen_prev = set()
+        for c in raw_clubs:
+            canon_c = clean_club_name(c)
+            if not canon_c:
+                continue
+            norm_c = canon_c.lower()
+            if norm_c == norm_curr or norm_c in norm_curr or norm_curr in norm_c:
+                continue
+            if canon_c not in seen_prev:
+                seen_prev.add(canon_c)
+                cleaned_prev.append(canon_c)
+        previous_clubs = cleaned_prev[:8]
 
         image_url = row.get('image_url') or ''
 
