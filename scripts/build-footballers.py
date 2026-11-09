@@ -229,19 +229,23 @@ for legend in LEGENDS:
         seen.add(legend['id'])
         final_players.append(legend)
 
-# 2. Add modern players sorted by notoriety
-players.sort(key=lambda p: (p['currentMarketValue'], p['highestMarketValue']), reverse=True)
+# 2. Add modern players sorted by HIGHEST career market value (peak fame)
+# This guarantees superstars like Modric, Ramos, Busquets, etc. are included!
+players.sort(key=lambda p: (p['highestMarketValue'], p['currentMarketValue']), reverse=True)
 for p in players:
     if p['id'] not in seen:
         seen.add(p['id'])
         del p['highestMarketValue']
         del p['currentMarketValue']
         final_players.append(p)
-        if len(final_players) >= 1600:
+        if len(final_players) >= 3000:
             break
 
 print(f"Total processed: {len(final_players)} footballers (including {len(LEGENDS)} icons).")
 with open('src/data/footballers.json', 'w', encoding='utf-8') as f:
+    json.dump(final_players, f, indent=2, ensure_ascii=False)
+
+with open('data/players.json', 'w', encoding='utf-8') as f:
     json.dump(final_players, f, indent=2, ensure_ascii=False)
 
 print("Saved to src/data/footballers.json successfully!")
