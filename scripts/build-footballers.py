@@ -110,7 +110,13 @@ def make_abbr(name):
         return words[0][:3].upper()
     return 'CLB'
 
-print("1. Loading transfers...")
+print("1. Loading clubs lookup...")
+club_id_to_name = {}
+with open('data/transfermarkt/clubs.csv', mode='r', encoding='utf-8') as f:
+    for row in csv.DictReader(f):
+        club_id_to_name[row['club_id']] = clean_club_name(row.get('name', ''))
+
+print("2. Loading transfer history from transfers.csv...")
 player_transfers = {}
 with open('data/transfermarkt/transfers.csv', mode='r', encoding='utf-8') as f:
     reader = csv.DictReader(f)
@@ -126,7 +132,19 @@ with open('data/transfermarkt/transfers.csv', mode='r', encoding='utf-8') as f:
         if to_club and 'Without Club' not in to_club and 'Youth' not in to_club and 'U19' not in to_club and 'U17' not in to_club:
             player_transfers[pid].add(to_club)
 
-print("2. Parsing players...")
+print("3. Augmenting match appearance clubs from appearances.csv (guarantees Godín, Busquets, Firmino, etc.)...")
+with open('data/transfermarkt/appearances.csv', mode='r', encoding='utf-8') as f:
+    for row in csv.DictReader(f):
+        pid = row['player_id']
+        cid = row.get('player_club_id')
+        if cid and cid in club_id_to_name:
+            cname = club_id_to_name[cid]
+            if cname:
+                if pid not in player_transfers:
+                    player_transfers[pid] = set()
+                player_transfers[pid].add(cname)
+
+print("4. Parsing players...")
 players = []
 now_year = datetime.now().year
 
