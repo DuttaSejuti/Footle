@@ -36,7 +36,7 @@ LEGENDS = [
     "positionAbbr": "DEF",
     "currentClub": "Atlético de Madrid",
     "clubAbbr": "ATM",
-    "age": 38,
+    "age": 40,
     "isRetired": True,
     "previousClubs": ["Cerro", "Nacional", "Villarreal", "Atlético de Madrid", "Atlético Madrid", "Inter Milan", "Cagliari", "Atlético Mineiro", "Vélez Sarsfield"],
     "achievements": ["Winning header vs Barcelona for 2013-14 La Liga title", "2x UEFA Europa League champion (2012, 2018)", "2011 Copa América champion with Uruguay", "161 caps for Uruguay"],
