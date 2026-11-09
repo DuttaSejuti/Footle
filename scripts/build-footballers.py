@@ -355,7 +355,4 @@ print(f"Total processed: {len(final_players)} footballers (including {len(LEGEND
 with open('src/data/footballers.json', 'w', encoding='utf-8') as f:
     json.dump(final_players, f, indent=2, ensure_ascii=False)
 
-with open('data/players.json', 'w', encoding='utf-8') as f:
-    json.dump(final_players, f, indent=2, ensure_ascii=False)
-
 print("Saved to src/data/footballers.json successfully!")

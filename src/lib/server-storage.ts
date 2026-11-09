@@ -4,7 +4,7 @@ import { footballersSeed } from '@/data/footballers';
 import { Footballer } from '@/types/footballer';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
-const PLAYERS_FILE = path.join(DATA_DIR, 'players.json');
+const PLAYERS_FILE = path.join(process.cwd(), 'src', 'data', 'footballers.json');
 const SCHEDULE_FILE = path.join(DATA_DIR, 'schedule.json');
 const ANALYTICS_FILE = path.join(DATA_DIR, 'analytics.json');
 
@@ -14,23 +14,20 @@ function ensureDataDir() {
   }
 }
 
-// 1. Players Data Store
+// 1. Players Data Store (Single Source of Truth: src/data/footballers.json)
 export function getPlayers(): Footballer[] {
-  ensureDataDir();
-  if (!fs.existsSync(PLAYERS_FILE)) {
-    fs.writeFileSync(PLAYERS_FILE, JSON.stringify(footballersSeed, null, 2), 'utf-8');
-    return footballersSeed;
-  }
   try {
-    const raw = fs.readFileSync(PLAYERS_FILE, 'utf-8');
-    return JSON.parse(raw);
+    if (fs.existsSync(PLAYERS_FILE)) {
+      const raw = fs.readFileSync(PLAYERS_FILE, 'utf-8');
+      return JSON.parse(raw);
+    }
+    return footballersSeed;
   } catch {
     return footballersSeed;
   }
 }
 
 export function savePlayers(players: Footballer[]): void {
-  ensureDataDir();
   fs.writeFileSync(PLAYERS_FILE, JSON.stringify(players, null, 2), 'utf-8');
 }
 
