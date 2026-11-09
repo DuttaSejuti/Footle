@@ -24,6 +24,27 @@ LEGENDS = [
     "isActive": True
   },
   {
+    "id": "diego-godin",
+    "fullName": "Diego Roberto Godín Leal",
+    "displayName": "Diego Godín",
+    "alternativeNames": ["Godin", "Diego Godin", "Godín"],
+    "nationality": "Uruguay",
+    "countryCode": "UY",
+    "flagEmoji": "🇺🇾",
+    "league": "La Liga",
+    "position": "Defender",
+    "positionAbbr": "DEF",
+    "currentClub": "Atlético de Madrid",
+    "clubAbbr": "ATM",
+    "age": 38,
+    "isRetired": True,
+    "previousClubs": ["Cerro", "Nacional", "Villarreal", "Atlético de Madrid", "Atlético Madrid", "Inter Milan", "Cagliari", "Atlético Mineiro", "Vélez Sarsfield"],
+    "achievements": ["Winning header vs Barcelona for 2013-14 La Liga title", "2x UEFA Europa League champion (2012, 2018)", "2011 Copa América champion with Uruguay", "161 caps for Uruguay"],
+    "imageUrl": "https://img.a.transfermarkt.technology/portrait/header/54928-1547721268.jpg?lm=1",
+    "difficulty": "Easy",
+    "isActive": True
+  },
+  {
     "id": "pele",
     "fullName": "Edson Arantes do Nascimento",
     "displayName": "Pelé",

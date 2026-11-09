@@ -90,7 +90,7 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
 
               {/* CLUB */}
               <div
-                className={`col-span-1 rounded-lg p-2 flex items-center justify-center text-center tactic-tile border-2 ${
+                className={`col-span-1 rounded-lg p-1.5 flex items-center justify-center text-center tactic-tile border-2 ${
                   comp.club.status === 'correct'
                     ? 'bg-[#15803d] border-emerald-400 text-white'
                     : comp.club.status === 'partial'
@@ -99,11 +99,12 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
                 }`}
               >
                 <span
-                  className={`font-mono text-sm sm:text-base font-black leading-tight truncate max-w-full ${
+                  title={comp.club.value}
+                  className={`font-mono text-xs sm:text-sm font-black leading-tight break-words line-clamp-2 max-w-full ${
                     comp.club.status === 'partial' ? 'text-zinc-950' : 'text-white'
                   }`}
                 >
-                  {comp.club.abbr}
+                  {comp.club.value}
                 </span>
               </div>
 

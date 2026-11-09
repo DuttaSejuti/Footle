@@ -252,7 +252,7 @@ export function compareFootballers(guessed: Footballer, target: Footballer): Gue
 
   // 3. Club:
   // Exact: Current club match
-  // Partial: Mystery player played for guessed club previously (Career Path)
+  // Partial: Career overlap (target played for guessed club, OR guessed played for target's current/former club, OR shared previous club)
   const normGuessedClub = normalizeString(guessed.currentClub);
   const normTargetClub = normalizeString(target.currentClub);
   let clubStatus: MatchStatus = 'wrong';
@@ -260,16 +260,19 @@ export function compareFootballers(guessed: Footballer, target: Footballer): Gue
   if (normGuessedClub === normTargetClub) {
     clubStatus = 'correct';
   } else {
-    const isFormerClub = (target.previousClubs || []).some((prev) => {
-      const normPrev = normalizeString(prev);
-      return (
-        normPrev.includes(normGuessedClub) ||
-        normGuessedClub.includes(normPrev) ||
-        (guessed.clubAbbr && normPrev.toUpperCase().includes(guessed.clubAbbr))
-      );
-    });
+    const targetAllClubs = [normTargetClub, ...(target.previousClubs || []).map(normalizeString)];
+    const guessedAllClubs = [normGuessedClub, ...(guessed.previousClubs || []).map(normalizeString)];
 
-    if (isFormerClub) {
+    const hasCareerOverlap = targetAllClubs.some((tc) =>
+      guessedAllClubs.some(
+        (gc) =>
+          tc.length >= 3 &&
+          gc.length >= 3 &&
+          (tc.includes(gc) || gc.includes(tc))
+      )
+    );
+
+    if (hasCareerOverlap) {
       clubStatus = 'partial';
     }
   }
