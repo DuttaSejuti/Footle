@@ -11,6 +11,7 @@ export interface Footballer {
   positionAbbr: 'GK' | 'DEF' | 'MID' | 'FWD';
   currentClub: string; // or last club if retired
   age: number;
+  birthYear?: number;
   isRetired: boolean;
   previousClubs: string[]; // Chronological previous clubs
   imageUrl?: string;

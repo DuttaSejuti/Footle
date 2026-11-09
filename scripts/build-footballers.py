@@ -37,6 +37,7 @@ LEAGUE_MAP = {
     'JAP1': 'J1 League',
     'RSK1': 'K League 1',
     'AUS1': 'A-League',
+    'COL1': 'Liga Colombiana',
 }
 
 # 2. Comprehensive Country Name -> (ISO Code, Flag Emoji, Confederation/Normalized)
@@ -132,7 +133,7 @@ COUNTRY_MAP = {
     'Armenia': ('AM', '🇦🇲'),
     'Azerbaijan': ('AZ', '🇦🇿'),
     'Kazakhstan': ('KZ', '🇰🇿'),
-    'Uzbekistan': ('UZ', '🇺🇿'),
+    'Uzbekistan': ('UZ', 'UZ'),
     'Saudi Arabia': ('SA', '🇸🇦'),
     'United Arab Emirates': ('AE', '🇦🇪'),
     'Qatar': ('QA', '🇶🇦'),
@@ -159,16 +160,13 @@ COUNTRY_MAP = {
     'Syria': ('SY', '🇸🇾'),
     'Libya': ('LY', '🇱🇾'),
     'Trinidad and Tobago': ('TT', '🇹🇹'),
-    'Trinidad & Tobago': ('TT', '🇹🇹'),
     'Curacao': ('CW', '🇨🇼'),
-    'Curaçao': ('CW', '🇨🇼'),
     'New Caledonia': ('NC', '🇳🇨'),
     'Tanzania': ('TZ', '🇹🇿'),
     'Jordan': ('JO', '🇯🇴'),
     'Bangladesh': ('BD', '🇧🇩'),
     'Comoros': ('KM', '🇰🇲'),
     'China': ('CN', '🇨🇳'),
-    'China PR': ('CN', '🇨🇳'),
 }
 
 # Explicit player nationality overrides for players missing country in Transfermarkt
@@ -226,6 +224,7 @@ CANONICAL_CLUBS = {
     'psg': 'Paris Saint-Germain',
     'bayern munich': 'Bayern Munich',
     'bayern munchen': 'Bayern Munich',
+    'fc bayern munich': 'Bayern Munich',
     'bayern': 'Bayern Munich',
     'inter milan': 'Inter Milan',
     'internazionale': 'Inter Milan',
@@ -260,6 +259,7 @@ CANONICAL_CLUBS = {
     'club internacional de futbol miami': 'Inter Miami',
     'as roma': 'Roma',
     'roma': 'Roma',
+    'associazione sportiva roma': 'Roma',
     'ssc napoli': 'Napoli',
     'napoli': 'Napoli',
     'sporting cp': 'Sporting CP',
@@ -288,65 +288,350 @@ CANONICAL_CLUBS = {
     'valencia': 'Valencia',
     'villarreal cf': 'Villarreal',
     'villarreal': 'Villarreal',
-    'real sociedad': 'Real Sociedad',
-    'athletic bilbao': 'Athletic Club',
-    'athletic club': 'Athletic Club',
     'bayer 04 leverkusen': 'Bayer Leverkusen',
     'bayer leverkusen': 'Bayer Leverkusen',
+    'leverkusen': 'Bayer Leverkusen',
+    'brighton & hove albion': 'Brighton',
+    'brighton': 'Brighton',
+    'fenerbahce': 'Fenerbahçe',
+    'fenerbahce sk': 'Fenerbahçe',
+    'fenerbahçe': 'Fenerbahçe',
+    'fenerbahçe sk': 'Fenerbahçe',
+    'galatasaray a.s.': 'Galatasaray',
+    'galatasaray': 'Galatasaray',
+    'besiktas jk': 'Beşiktaş',
+    'besiktas': 'Beşiktaş',
+    'beşiktaş': 'Beşiktaş',
+    'montpellier hsc': 'Montpellier',
+    'montpellier': 'Montpellier',
+    'paris fc': 'Paris FC',
+    'swansea city': 'Swansea City',
+    'swansea': 'Swansea City',
+    'west bromwich albion': 'West Bromwich Albion',
+    'west brom': 'West Bromwich Albion',
+    'coventry city': 'Coventry City',
+    'coventry': 'Coventry City',
+    'leeds united': 'Leeds United',
+    'leeds': 'Leeds United',
+    'southampton fc': 'Southampton',
+    'southampton': 'Southampton',
+    'brentford fc': 'Brentford',
+    'brentford': 'Brentford',
+    'crystal palace': 'Crystal Palace',
+    'fulham fc': 'Fulham',
+    'fulham': 'Fulham',
+    'wolverhampton wanderers': 'Wolves',
+    'wolves': 'Wolves',
+    'as monaco': 'Monaco',
+    'monaco': 'Monaco',
+    'lille osc': 'Lille',
+    'lille': 'Lille',
+    'olympique lyon': 'Lyon',
+    'lyon': 'Lyon',
+    'olympique marseille': 'Marseille',
+    'marseille': 'Marseille',
+    'ogc nice': 'Nice',
+    'nice': 'Nice',
+    'stade rennais fc': 'Rennes',
+    'stade rennais': 'Rennes',
+    'rennes': 'Rennes',
+    'rc lens': 'Lens',
+    'lens': 'Lens',
+    'eintracht frankfurt': 'Frankfurt',
+    'frankfurt': 'Frankfurt',
+    'vfb stuttgart': 'VfB Stuttgart',
+    'stuttgart': 'VfB Stuttgart',
     'rb leipzig': 'RB Leipzig',
     'leipzig': 'RB Leipzig',
-    'eintracht frankfurt': 'Eintracht Frankfurt',
-    'frankfurt': 'Eintracht Frankfurt',
     'vfl wolfsburg': 'VfL Wolfsburg',
     'wolfsburg': 'VfL Wolfsburg',
+    'borussia monchengladbach': 'Borussia Mönchengladbach',
+    'mönchengladbach': 'Borussia Mönchengladbach',
+    'monchengladbach': 'Borussia Mönchengladbach',
     'ss lazio': 'Lazio',
     'lazio': 'Lazio',
     'acf fiorentina': 'Fiorentina',
     'fiorentina': 'Fiorentina',
     'atalanta bc': 'Atalanta',
     'atalanta': 'Atalanta',
-    'olympique de marseille': 'Marseille',
-    'marseille': 'Marseille',
-    'olympique lyonnais': 'Lyon',
-    'lyon': 'Lyon',
-    'as monaco': 'Monaco',
-    'monaco': 'Monaco',
-    'losc lille': 'Lille',
-    'lille': 'Lille',
+    'torino fc': 'Torino',
+    'torino': 'Torino',
+    'bologna fc 1909': 'Bologna',
+    'bologna': 'Bologna',
+    'athletic bilbao': 'Athletic Club',
+    'athletic club': 'Athletic Club',
+    'real sociedad': 'Real Sociedad',
+    'real betis balompie': 'Real Betis',
+    'real betis': 'Real Betis',
+    'betis': 'Real Betis',
+    'rcd espanyol barcelona': 'Espanyol',
+    'rcd espanyol': 'Espanyol',
+    'espanyol': 'Espanyol',
+    'rc celta de vigo': 'Celta Vigo',
+    'celta de vigo': 'Celta Vigo',
+    'celta vigo': 'Celta Vigo',
+    'ca osasuna': 'Osasuna',
+    'osasuna': 'Osasuna',
+    'getafe cf': 'Getafe',
+    'getafe': 'Getafe',
+    'rayo vallecano': 'Rayo Vallecano',
+    'girona fc': 'Girona',
+    'girona': 'Girona',
+    'al-ahli sfc': 'Al-Ahli',
+    'al-ahli': 'Al-Ahli',
+    'al-ittihad club': 'Al-Ittihad',
+    'al-ittihad': 'Al-Ittihad',
+    'los angeles fc': 'Los Angeles FC',
+    'lafc': 'Los Angeles FC',
+    'la galaxy': 'LA Galaxy',
+    'new york red bulls': 'New York Red Bulls',
+    'new york city fc': 'New York City FC',
+    'new york city': 'New York City FC',
+    'philadelphia union': 'Philadelphia Union',
+    'seattle sounders fc': 'Seattle Sounders',
+    'seattle sounders': 'Seattle Sounders',
+    'feyenoord rotterdam': 'Feyenoord',
+    'feyenoord': 'Feyenoord',
+    'psv eindhoven': 'PSV Eindhoven',
+    'psv': 'PSV Eindhoven',
+    'az alkmaar': 'AZ Alkmaar',
+    'az': 'AZ Alkmaar',
+    'sc braga': 'Braga',
+    'braga': 'Braga',
+    'fc copenhagen': 'Copenhagen',
+    'copenhagen': 'Copenhagen',
+    'crvena zvezda': 'Red Star Belgrade',
+    'red star belgrade': 'Red Star Belgrade',
+    'red star': 'Red Star Belgrade',
+    'gnk dinamo zagreb': 'Dinamo Zagreb',
+    'dinamo zagreb': 'Dinamo Zagreb',
+    'fc shakhtar donetsk': 'Shakhtar Donetsk',
+    'shakhtar donetsk': 'Shakhtar Donetsk',
+    'dynamo kyiv': 'Dynamo Kyiv',
+    'fc dynamo kyiv': 'Dynamo Kyiv',
+    'olympiacos piraeus': 'Olympiacos',
+    'olympiacos fc': 'Olympiacos',
+    'olympiacos': 'Olympiacos',
+    'paok thessaloniki': 'PAOK',
+    'paok': 'PAOK',
+    'panathinaikos fc': 'Panathinaikos',
+    'panathinaikos': 'Panathinaikos',
+    'aek athens': 'AEK Athens',
+    'fc spartak moscow': 'Spartak Moscow',
+    'spartak moscow': 'Spartak Moscow',
+    'zenit st. petersburg': 'Zenit',
+    'zenit': 'Zenit',
+    'pfc cska moscow': 'CSKA Moscow',
+    'cska moscow': 'CSKA Moscow',
+    'flamengo': 'Flamengo',
+    'clube de regatas do flamengo': 'Flamengo',
+    'palmeiras': 'Palmeiras',
+    'sociedade esportiva palmeiras': 'Palmeiras',
+    'santos fc': 'Santos',
+    'santos': 'Santos',
+    'sao paulo fc': 'São Paulo',
+    'são paulo': 'São Paulo',
+    'corinthians': 'Corinthians',
+    'sport club corinthians paulista': 'Corinthians',
+    'gremio': 'Grêmio',
+    'grêmio': 'Grêmio',
+    'internacional': 'Internacional',
+    'sport club internacional': 'Internacional',
+    'fluminense': 'Fluminense',
+    'fluminense football club': 'Fluminense',
+    'atletico mineiro': 'Atlético Mineiro',
+    'clube atletico mineiro': 'Atlético Mineiro',
+    'boca juniors': 'Boca Juniors',
+    'club atletico boca juniors': 'Boca Juniors',
+    'river plate': 'River Plate',
+    'club atletico river plate': 'River Plate',
+    'racing club': 'Racing Club',
+    'independiente': 'Independiente',
+    'san lorenzo': 'San Lorenzo',
+    'club america': 'Club América',
+    'america': 'Club América',
+    'cd guadalajara': 'Chivas',
+    'chivas': 'Chivas',
+    'cf monterrey': 'Monterrey',
+    'monterrey': 'Monterrey',
+    'tigres uanl': 'Tigres',
+    'tigres': 'Tigres',
+    'cruz azul': 'Cruz Azul',
+    'pumas unam': 'Pumas',
+    'millonarios fc': 'Millonarios',
+    'millonarios': 'Millonarios',
+    'junior fc': 'Junior',
+    'junior': 'Junior',
+    'atletico nacional': 'Atlético Nacional',
+    'atlético nacional': 'Atlético Nacional',
+    'cd america de cali': 'América de Cali',
+    'américa de cali': 'América de Cali',
+    'atletico bucaramanga': 'Atlético Bucaramanga',
+    'atlético bucaramanga': 'Atlético Bucaramanga',
 }
 
-# Deceased players to exclude from game challenges
-DECEASED_PLAYERS = {'emiliano-sala', 'christian-atsu'}
+# Regex to detect youth/reserve teams
+YOUTH_RE = re.compile(
+    r'(\bU\s*\d{2}\b|\bSub[- ]\d{2}\b|\bYth\.?\b|\bYouth\b|\bRes\.?\b|\bReserve[s]?\b|\bAcad\.?\b|\bAcademy\b|\bJug\.?\b|\bJugend\b|\bFor\.?\b|\bForm\.?\b|\bFormation\b|\bJuvenil\b|\bJV\b|\bJun\.?\b|\bJuniors?\b|\bPrimavera\b|\bII\b|\bIII\b|\b B\b|\b C\b)',
+    re.IGNORECASE
+)
 
-# Famous nicknames map
+DATE_SUFFIX_RE = re.compile(r'\s*\(-?\s*\d{4}\)', re.IGNORECASE)
+
+KNOWN_EXPANSIONS = {
+    'shakhtar d.': 'Shakhtar Donetsk',
+    'sparta r.': 'Sparta Rotterdam',
+    'toulouse for.': 'Toulouse',
+    'argentinos jrs.': 'Argentinos Juniors',
+    'argentinos jrs': 'Argentinos Juniors',
+    'kawasaki front.': 'Kawasaki Frontale',
+    'heart of midl.': 'Heart of Midlothian',
+    'newell\'s jv': 'Newell\'s Old Boys',
+    'newell\'s': 'Newell\'s Old Boys',
+    'newells': 'Newell\'s Old Boys',
+}
+
+# Common nicknames
 NICKNAMES = {
-    'cristiano-ronaldo': ['CR7', 'Ronaldo'],
-    'lionel-messi': ['Messi', 'Leo Messi', 'La Pulga'],
-    'sergio-aguero': ['Kun Agüero', 'Kun Aguero', 'Aguero'],
+    'cristiano-ronaldo': ['CR7', 'El Bicho', 'Ronaldo'],
+    'lionel-messi': ['Leo Messi', 'La Pulga', 'Messi'],
+    'sergio-aguero': ['Kun Agüero', 'Kun Aguero', 'Kun'],
     'fernando-torres': ['El Niño', 'El Nino'],
-    'ronaldo-nazario': ['R9', 'O Fenômeno', 'O Fenomeno'],
-    'diego-maradona': ['El Pibe de Oro', 'Maradona'],
-    'pele': ['O Rei', 'Pele'],
+    'ronaldo-nazario': ['O Fenômeno', 'O Fenomeno', 'R9', 'El Fenómeno'],
     'kevin-de-bruyne': ['KDB'],
-    'vinicius-junior': ['Vini Jr', 'Vini'],
+    'vinicius-junior': ['Vini Jr', 'Vini Jr.', 'Vini'],
+    'erling-haaland': ['Haaland'],
+    'kylian-mbappe': ['Mbappé', 'Mbappe'],
+    'neymar': ['Neymar Jr', 'Neymar Jr.'],
+    'son-heung-min': ['Sonny', 'Son'],
+    'luka-modric': ['Lukita'],
+    'karim-benzema': ['Benzema', 'KB9'],
+    'robert-lewandowski': ['Lewy', 'Lewandowski'],
     'javier-hernandez': ['Chicharito'],
-    'alexis-sanchez': ['El Niño Maravilla'],
-    'radamel-falcao': ['El Tigre'],
-    'edinson-cavani': ['El Matador'],
-    'luis-suarez': ['El Pistolero'],
+    'alexis-sanchez': ['El Niño Maravilla', 'Alexis'],
 }
 
-def clean_slug(name):
-    s = ''.join(c for c in unicodedata.normalize('NFD', name) if unicodedata.category(c) != 'Mn')
-    s = s.lower()
-    s = re.sub(r'[^a-z0-9]+', '-', s)
-    return s.strip('-')
+# Manual backfill of complete senior career history for legacy / veteran players
+LEGACY_CAREERS = {
+    'gerard-pique': ['Manchester United', 'Real Zaragoza', 'Barcelona'],
+    'marco-verratti': ['Pescara', 'Paris Saint-Germain', 'Al-Arabi'],
+    'lorenzo-insigne': ['Napoli', 'Cavese', 'Foggia', 'Pescara', 'Toronto FC'],
+    'giorgio-chiellini': ['Livorno', 'Fiorentina', 'Juventus', 'Los Angeles FC'],
+    'daniele-de-rossi': ['Roma', 'Boca Juniors'],
+    'antonio-valencia': ['El Nacional', 'Villarreal', 'Recreativo', 'Wigan Athletic', 'Manchester United', 'LDU Quito', 'Querétaro'],
+    'samir-handanovic': ['Domžale', 'Zagorje', 'Udinese', 'Treviso', 'Lazio', 'Rimini', 'Inter Milan'],
+    'patson-daka': ['Kafue Celtic', 'Power Dynamos', 'Liefering', 'Red Bull Salzburg', 'Leicester City'],
+    'lars-bender': ['1860 Munich', 'Bayer Leverkusen'],
+    'marcel-halstenberg': ['Hannover 96', 'Borussia Dortmund', 'FC St. Pauli', 'RB Leipzig', 'Hannover 96'],
+    'leighton-baines': ['Wigan Athletic', 'Everton'],
+    'enock-mwepu': ['Kafue Celtic', 'NAPSA Stars', 'Liefering', 'Red Bull Salzburg', 'Brighton'],
+    'mario-gaspar': ['Villarreal', 'Watford', 'Elche'],
+    'phil-jones': ['Blackburn Rovers', 'Manchester United'],
+    'riccardo-montolivo': ['Atalanta', 'Fiorentina', 'AC Milan'],
+    'juanfran-torres': ['Real Madrid', 'Espanyol', 'Osasuna', 'Atlético Madrid', 'São Paulo'],
+    'lukasz-piszczek': ['Zagłębie Lubin', 'Hertha BSC', 'Borussia Dortmund', 'Goczałkowice-Zdrój'],
+    'vedran-corluka': ['Dinamo Zagreb', 'Inter Zaprešić', 'Manchester City', 'Tottenham Hotspur', 'Bayer Leverkusen', 'Lokomotiv Moscow'],
+    'andrea-barzagli': ['Rondinella', 'Pistoiese', 'Ascoli', 'Chievo', 'Palermo', 'VfL Wolfsburg', 'Juventus'],
+    'senad-lulic': ['Chur 97', 'Bellinzona', 'Grasshopper', 'Young Boys', 'Lazio'],
+    'ignazio-abate': ['Napoli', 'Piacenza', 'Modena', 'Empoli', 'Torino', 'AC Milan'],
+    'selcuk-inan': ['Dardanelspor', 'Manisaspor', 'Trabzonspor', 'Galatasaray'],
+    'onur-kivrak': ['Karşıyaka', 'Trabzonspor'],
+    'mikel-san-jose': ['Liverpool', 'Athletic Club', 'Birmingham City', 'Amorebieta'],
+    'asamoah-gyan': ['Liberty Professionals', 'Udinese', 'Modena', 'Rennes', 'Sunderland', 'Al Ain', 'Shanghai SIPG', 'Kayserispor', 'NorthEast United', 'Legon Cities'],
+    'troy-deeney': ['Chelmsley Town', 'Walsall', 'Halesowen Town', 'Watford', 'Birmingham City', 'Forest Green Rovers'],
+    'fredy-montero': ['Deportivo Cali', 'Academia', 'Atlético Huila', 'Seattle Sounders', 'Millonarios', 'Sporting CP', 'Tianjin TEDA', 'Vancouver Whitecaps'],
+    'stephane-ruffier': ['Monaco', 'Bayonne', 'Saint-Étienne'],
+    'lei-wu': ['Shanghai Port', 'Espanyol', 'Shanghai Port'],
+    'santiago-caseres': ['Vélez Sarsfield', 'Villarreal', 'Club América', 'Vélez Sarsfield'],
+    'mikel-oyarzabal': ['Eibar', 'Real Sociedad'],
+}
 
-def clean_club_name(name):
-    if not name:
+# Mononym disambiguation overrides
+MONONYM_OVERRIDES = {
+    'gabriel': {
+        'displayName': 'Gabriel Magalhães',
+        'fullName': 'Gabriel dos Santos Magalhães',
+        'alternativeNames': ['Gabriel', 'Gabriel Magalhaes', 'Gabriel Magalhães'],
+    },
+    'wesley': {
+        'displayName': 'Wesley Gassova',
+        'fullName': 'Wesley Vinícius dos Santos Gassova',
+        'alternativeNames': ['Wesley', 'Wesley Gassova'],
+    },
+    'kevin': {
+        'displayName': 'Kevin',
+        'fullName': 'Kevin Santos Lopes de Macedo',
+        'alternativeNames': ['Kevin', 'Kevin Santos'],
+    },
+    'rayan': {
+        'displayName': 'Rayan',
+        'fullName': 'Rayan Vitor Simplício Rocha',
+        'alternativeNames': ['Rayan', 'Rayan Vitor'],
+    },
+    'jordan': {
+        'displayName': 'Jordan Siebatcheu',
+        'fullName': 'Jordan Siebatcheu',
+        'alternativeNames': ['Jordan Pefok', 'Jordan', 'Siebatcheu', 'Pefok'],
+    },
+}
+
+# Deceased icons IDs
+DECEASED_ICONS = {
+    'diego-maradona',
+    'pele',
+    'johan-cruyff',
+    'franz-beckenbauer',
+    'lev-yashin',
+    'ferenc-puskas',
+    'gerd-muller',
+}
+
+# Deceased modern players to exclude from dataset
+DECEASED_PLAYERS = {
+    'emiliano-sala',
+    'christian-atsu',
+}
+
+def clean_slug(name: str) -> str:
+    replacements = {
+        'ø': 'o', 'Ø': 'o',
+        'ı': 'i', 'İ': 'i',
+        'ł': 'l', 'Ł': 'l',
+        'æ': 'ae', 'Æ': 'ae',
+        'œ': 'oe', 'Œ': 'oe',
+        'ß': 'ss',
+        'ð': 'd', 'Ð': 'd',
+        'þ': 'th', 'Þ': 'th',
+    }
+    for char, rep in replacements.items():
+        name = name.replace(char, rep)
+    
+    nfd = unicodedata.normalize('NFD', name)
+    clean = ''.join(c for c in nfd if unicodedata.category(c) != 'Mn')
+    slug = re.sub(r'[^a-zA-Z0-9]+', '-', clean).strip('-').lower()
+    return re.sub(r'-+', '-', slug)
+
+def clean_club_name(name: str) -> str:
+    if not name or 'without club' in name.lower() or 'unknown' in name.lower():
         return ''
-    if re.search(r'\b(U\d+|Yth|Youth|Jgd|Sub-\d+|JV|Academy|II|B|C)\b', name, flags=re.IGNORECASE):
+    
+    # Strip dissolution date suffix like "(-2020)"
+    name = DATE_SUFFIX_RE.sub('', name).strip()
+    
+    low = name.lower()
+    if low in KNOWN_EXPANSIONS:
+        name = KNOWN_EXPANSIONS[low]
+        low = name.lower()
+    
+    # Guard Paris FC before stripping FC!
+    if low == 'paris fc':
+        return 'Paris FC'
+    
+    # Check if youth / reserve / amateur formation
+    if YOUTH_RE.search(name):
         return ''
+    
+    # Standardize general corporate and legal entity abbreviations
     name = re.sub(r'\s+(S\.p\.A\.|F\.C\.|FC|CF|C\.F\.|SAD|plc|e\.V\.|LLC)', '', name, flags=re.IGNORECASE)
     name = re.sub(r'^(Società Sportiva|Associazione Calcio|Futbol Club|Club Internacional de Fútbol)\s+', '', name, flags=re.IGNORECASE)
     name = name.strip()
@@ -360,24 +645,21 @@ with open('data/transfermarkt/clubs.csv', mode='r', encoding='utf-8') as f:
         club_id_to_name[row['club_id']] = clean_club_name(row.get('name', ''))
 
 print("2. Loading chronological transfer events from transfers.csv...")
-# Map: pid -> list of (date_str, club_name)
-player_transfers_chronological = {}
+# Map: pid -> list of (transfer_date, from_club, to_club)
+player_transfers = {}
 with open('data/transfermarkt/transfers.csv', mode='r', encoding='utf-8') as f:
     reader = csv.DictReader(f)
     for row in reader:
         pid = row['player_id']
         t_date = row.get('transfer_date') or '1970-01-01'
-        from_club = clean_club_name(row.get('from_club_name', ''))
-        to_club = clean_club_name(row.get('to_club_name', ''))
-        
-        if pid not in player_transfers_chronological:
-            player_transfers_chronological[pid] = []
-        if from_club and 'Without Club' not in from_club:
-            player_transfers_chronological[pid].append((t_date, from_club))
-        if to_club and 'Without Club' not in to_club:
-            player_transfers_chronological[pid].append((t_date, to_club))
+        fc = clean_club_name(row.get('from_club_name', ''))
+        tc = clean_club_name(row.get('to_club_name', ''))
+        if pid not in player_transfers:
+            player_transfers[pid] = []
+        player_transfers[pid].append((t_date, fc, tc))
 
 print("3. Augmenting match appearances chronologically from appearances.csv...")
+player_appearances = {}
 with open('data/transfermarkt/appearances.csv', mode='r', encoding='utf-8') as f:
     for row in csv.DictReader(f):
         pid = row['player_id']
@@ -386,9 +668,9 @@ with open('data/transfermarkt/appearances.csv', mode='r', encoding='utf-8') as f
         if cid and cid in club_id_to_name:
             cname = club_id_to_name[cid]
             if cname:
-                if pid not in player_transfers_chronological:
-                    player_transfers_chronological[pid] = []
-                player_transfers_chronological[pid].append((app_date, cname))
+                if pid not in player_appearances:
+                    player_appearances[pid] = []
+                player_appearances[pid].append((app_date, cname))
 
 print("4. Parsing players from players.csv...")
 players = []
@@ -407,11 +689,13 @@ with open('data/transfermarkt/players.csv', mode='r', encoding='utf-8') as f:
 
         dob_str = row.get('date_of_birth') or ''
         age = 25
+        birth_year = 2001
         if dob_str:
             try:
                 dob_clean = dob_str.split()[0]
                 dt = datetime.strptime(dob_clean, '%Y-%m-%d')
                 age = now.year - dt.year - ((now.month, now.day) < (dt.month, dt.day))
+                birth_year = dt.year
             except:
                 pass
 
@@ -448,50 +732,88 @@ with open('data/transfermarkt/players.csv', mode='r', encoding='utf-8') as f:
         country = COUNTRY_NORM.get(country_raw, country_raw)
         code, flag = COUNTRY_MAP.get(country, ('UN', '⚽'))
 
-        # Build chronological previous clubs without duplicates
+        # Check if manual legacy career backfill exists
         pid = row['player_id']
-        raw_timeline = player_transfers_chronological.get(pid, [])
-        # Sort by date
-        raw_timeline.sort(key=lambda x: x[0])
+        if slug in LEGACY_CAREERS:
+            raw_career = LEGACY_CAREERS[slug]
+            # In Approach B, if player is retired, last club in career is currentClub
+            is_ret = (last_season <= 2023 and age >= 36)
+            if is_ret and len(raw_career) > 1:
+                current_club = raw_career[-1]
+                previous_clubs = raw_career[:-1]
+            else:
+                current_club_norm = current_club.lower()
+                previous_clubs = [c for c in raw_career if c.lower() != current_club_norm]
+        else:
+            # Reconstruct career sequentially from sorted transfers
+            t_events = sorted(player_transfers.get(pid, []), key=lambda x: x[0])
+            
+            career_sequence = []
+            for t_date, fc, tc in t_events:
+                if fc:
+                    if not career_sequence or career_sequence[-1] != fc:
+                        career_sequence.append(fc)
+                if tc:
+                    if not career_sequence or career_sequence[-1] != tc:
+                        career_sequence.append(tc)
+            
+            # Augment with appearance clubs if transfers were sparse
+            app_events = sorted(player_appearances.get(pid, []), key=lambda x: x[0])
+            for a_date, cname in app_events:
+                if cname:
+                    if not career_sequence:
+                        career_sequence.append(cname)
+                    elif cname not in career_sequence:
+                        career_sequence.append(cname)
 
-        norm_curr = current_club.lower()
-        chronological_prev = []
-        for _, c in raw_timeline:
-            canon = clean_club_name(c)
-            if not canon:
-                continue
-            norm_c = canon.lower()
-            if norm_c == norm_curr or norm_c in norm_curr or norm_curr in norm_c:
-                continue
-            # Avoid immediate consecutive duplicates
-            if not chronological_prev or chronological_prev[-1] != canon:
-                chronological_prev.append(canon)
+            is_ret = (last_season <= 2023 and age >= 36)
+            if is_ret and career_sequence:
+                # Approach B: last club is currentClub
+                current_club = career_sequence[-1]
+                # Exclude occurrences of currentClub from previousClubs
+                norm_last = current_club.lower()
+                previous_clubs = [c for c in career_sequence[:-1] if c.lower() != norm_last]
+            else:
+                # Active player: remove trailing occurrences of current club
+                norm_curr = current_club.lower()
+                while career_sequence and career_sequence[-1].lower() == norm_curr:
+                    career_sequence.pop()
+                previous_clubs = [c for c in career_sequence if c.lower() != norm_curr]
 
-        # De-duplicate while preserving earliest-to-latest order
-        seen_c = set()
-        unique_ordered_prev = []
-        for c in chronological_prev:
-            if c not in seen_c:
-                seen_c.add(c)
-                unique_ordered_prev.append(c)
+            # Sequential clean: collapse adjacent duplicates while preserving multiple distinct spells
+            collapsed_prev = []
+            for c in previous_clubs:
+                if not collapsed_prev or collapsed_prev[-1] != c:
+                    collapsed_prev.append(c)
+            previous_clubs = collapsed_prev
 
-        previous_clubs = unique_ordered_prev[:8]
-
-        # Alternative names (aliases & nicknames)
+        # Disambiguate mononyms
+        disp_name = name
+        full_name = name
         alt_names = [name]
+        
+        if slug in MONONYM_OVERRIDES:
+            ov = MONONYM_OVERRIDES[slug]
+            disp_name = ov['displayName']
+            full_name = ov['fullName']
+            alt_names = list(ov['alternativeNames'])
+        
+        # Ensure display name is always in alternative names
+        if disp_name not in alt_names:
+            alt_names.insert(0, disp_name)
+
         if slug in NICKNAMES:
             for nick in NICKNAMES[slug]:
                 if nick not in alt_names:
                     alt_names.append(nick)
 
-        is_retired = (last_season <= 2023 and age >= 36)
         difficulty = 'Easy' if highest_mv >= 40000000 else ('Medium' if highest_mv >= 15000000 else 'Hard')
         image_url = row.get('image_url') or ''
 
         players.append({
             'id': slug,
-            'fullName': name,
-            'displayName': name,
+            'fullName': full_name,
+            'displayName': disp_name,
             'alternativeNames': alt_names,
             'nationality': country,
             'countryCode': code,
@@ -501,7 +823,8 @@ with open('data/transfermarkt/players.csv', mode='r', encoding='utf-8') as f:
             'positionAbbr': position_abbr,
             'currentClub': current_club,
             'age': age,
-            'isRetired': is_retired,
+            'birthYear': birth_year,
+            'isRetired': is_ret,
             'previousClubs': previous_clubs,
             'imageUrl': image_url,
             'difficulty': difficulty,
@@ -517,86 +840,183 @@ try:
 except ImportError:
     LEGENDS = []
 
+# Approach B mappings for all 62 curated legends: (final senior club, league of final club)
+APPROACH_B_LEGENDS = {
+    'diego-maradona': ('Newell\'s Old Boys', 'Argentine Primera'),
+    'pele': ('New York Cosmos', 'Other League'),
+    'zinedine-zidane': ('Real Madrid', 'La Liga'),
+    'ronaldo-nazario': ('Corinthians', 'Brasileirão'),
+    'ronaldinho': ('Querétaro', 'Liga MX'),
+    'thierry-henry': ('New York Red Bulls', 'MLS'),
+    'paolo-maldini': ('AC Milan', 'Serie A'),
+    'roberto-carlos': ('Anzhi Makhachkala', 'Russian Premier League'),
+    'cafu': ('AC Milan', 'Serie A'),
+    'kaka': ('Orlando City', 'MLS'),
+    'andres-iniesta': ('Emirates Club', 'Other League'),
+    'xavi': ('Al Sadd', 'Other League'),
+    'andrea-pirlo': ('New York City FC', 'MLS'),
+    'david-beckham': ('Paris Saint-Germain', 'Ligue 1'),
+    'steven-gerrard': ('LA Galaxy', 'MLS'),
+    'frank-lampard': ('New York City FC', 'MLS'),
+    'paul-scholes': ('Manchester United', 'Premier League'),
+    'patrick-vieira': ('Manchester City', 'Premier League'),
+    'dennis-bergkamp': ('Arsenal', 'Premier League'),
+    'alan-shearer': ('Newcastle United', 'Premier League'),
+    'wayne-rooney': ('Derby County', 'Other League'),
+    'didier-drogba': ('Phoenix Rising', 'Other League'),
+    'samuel-etoo': ('Qatar SC', 'Other League'),
+    'iker-casillas': ('Porto', 'Primeira Liga'),
+    'gianluigi-buffon': ('Parma', 'Serie A'),
+    'peter-schmeichel': ('Manchester City', 'Premier League'),
+    'oliver-kahn': ('Bayern Munich', 'Bundesliga'),
+    'carles-puyol': ('Barcelona', 'La Liga'),
+    'alessandro-nesta': ('Chennaiyin', 'Other League'),
+    'fabio-cannavaro': ('Al-Ahli', 'Other League'),
+    'rio-ferdinand': ('Queens Park Rangers', 'Other League'),
+    'sergio-aguero': ('Barcelona', 'La Liga'),
+    'raul': ('New York Cosmos', 'Other League'),
+    'luis-figo': ('Inter Milan', 'Serie A'),
+    'rivaldo': ('Mogi Mirim', 'Brasileirão'),
+    'zlatan-ibrahimovic': ('AC Milan', 'Serie A'),
+    'gareth-bale': ('Los Angeles FC', 'MLS'),
+    'ruud-van-nistelrooy': ('Málaga', 'La Liga'),
+    'andriy-shevchenko': ('Dynamo Kyiv', 'Ukrainian Premier League'),
+    'clarence-seedorf': ('Botafogo', 'Brasileirão'),
+    'ruud-gullit': ('Chelsea', 'Premier League'),
+    'marco-van-basten': ('AC Milan', 'Serie A'),
+    'lothar-matthaus': ('MetroStars', 'MLS'),
+    'romario': ('América-RJ', 'Brasileirão'),
+    'gabriel-batistuta': ('Al-Arabi', 'Other League'),
+    'javier-zanetti': ('Inter Milan', 'Serie A'),
+    'hristo-stoichkov': ('D.C. United', 'MLS'),
+    'george-weah': ('Al-Jazira', 'Other League'),
+    'franco-baresi': ('AC Milan', 'Serie A'),
+    'johan-cruyff': ('Feyenoord', 'Eredivisie'),
+    'franz-beckenbauer': ('New York Cosmos', 'Other League'),
+    'michel-platini': ('Juventus', 'Serie A'),
+    'lev-yashin': ('Dynamo Moscow', 'Russian Premier League'),
+    'ferenc-puskas': ('Real Madrid', 'La Liga'),
+    'gerd-muller': ('Fort Lauderdale Strikers', 'Other League'),
+    'ronald-koeman': ('Feyenoord', 'Eredivisie'),
+    'eric-cantona': ('Manchester United', 'Premier League'),
+    'michael-owen': ('Stoke City', 'Premier League'),
+    'fernando-torres': ('Sagan Tosu', 'J1 League'),
+    'mesut-ozil': ('İstanbul Başakşehir', 'Süper Lig'),
+    'eden-hazard': ('Real Madrid', 'La Liga'),
+    'diego-godin': ('Vélez Sarsfield', 'Argentine Primera'),
+}
+
+# Canonical exact ages and birth years for curated legends as of Nov 2026
+LEGEND_METADATA = {
+    'diego-maradona': (60, 1960),
+    'pele': (82, 1940),
+    'johan-cruyff': (68, 1947),
+    'franz-beckenbauer': (78, 1945),
+    'lev-yashin': (60, 1929),
+    'ferenc-puskas': (79, 1927),
+    'gerd-muller': (75, 1945),
+    'diego-godin': (40, 1986),
+    'zinedine-zidane': (54, 1972),
+    'ronaldo-nazario': (50, 1976),
+    'ronaldinho': (46, 1980),
+    'thierry-henry': (49, 1977),
+    'paolo-maldini': (58, 1968),
+    'roberto-carlos': (53, 1973),
+    'cafu': (56, 1970),
+    'kaka': (44, 1982),
+    'andres-iniesta': (42, 1984),
+    'xavi': (46, 1980),
+    'andrea-pirlo': (47, 1979),
+    'david-beckham': (51, 1975),
+    'steven-gerrard': (46, 1980),
+    'frank-lampard': (48, 1978),
+    'paul-scholes': (51, 1974),
+    'patrick-vieira': (50, 1976),
+    'dennis-bergkamp': (57, 1969),
+    'alan-shearer': (56, 1970),
+    'wayne-rooney': (41, 1985),
+    'didier-drogba': (48, 1978),
+    'samuel-etoo': (45, 1981),
+    'iker-casillas': (45, 1981),
+    'gianluigi-buffon': (48, 1978),
+    'peter-schmeichel': (62, 1963),
+    'oliver-kahn': (57, 1969),
+    'carles-puyol': (48, 1978),
+    'alessandro-nesta': (50, 1976),
+    'fabio-cannavaro': (53, 1973),
+    'rio-ferdinand': (48, 1978),
+    'sergio-aguero': (38, 1988),
+    'raul': (49, 1977),
+    'luis-figo': (54, 1972),
+    'rivaldo': (54, 1972),
+    'zlatan-ibrahimovic': (45, 1981),
+    'gareth-bale': (37, 1989),
+    'ruud-van-nistelrooy': (50, 1976),
+    'andriy-shevchenko': (50, 1976),
+    'clarence-seedorf': (50, 1976),
+    'ruud-gullit': (64, 1962),
+    'marco-van-basten': (62, 1964),
+    'lothar-matthaus': (65, 1961),
+    'romario': (60, 1966),
+    'gabriel-batistuta': (57, 1969),
+    'javier-zanetti': (53, 1973),
+    'hristo-stoichkov': (60, 1966),
+    'george-weah': (60, 1966),
+    'franco-baresi': (66, 1960),
+    'michel-platini': (71, 1955),
+    'ronald-koeman': (63, 1963),
+    'eric-cantona': (60, 1966),
+    'michael-owen': (46, 1979),
+    'fernando-torres': (42, 1984),
+    'mesut-ozil': (38, 1988),
+    'eden-hazard': (35, 1991),
+}
+
 seen = set()
 final_players = []
 
-# Canonical exact ages for curated legends as of Nov 2026 (or age at death for deceased)
-LEGEND_EXACT_AGES = {
-    'diego-maradona': 60,       # Deceased (1960-2020)
-    'pele': 82,                 # Deceased (1940-2022)
-    'johan-cruyff': 68,         # Deceased (1947-2016)
-    'franz-beckenbauer': 78,    # Deceased (1945-2024)
-    'lev-yashin': 60,           # Deceased (1929-1990)
-    'ferenc-puskas': 79,        # Deceased (1927-2006)
-    'gerd-muller': 75,          # Deceased (1945-2021)
-    'diego-godin': 40,
-    'zinedine-zidane': 54,
-    'ronaldo-nazario': 50,
-    'ronaldinho': 46,
-    'thierry-henry': 49,
-    'paolo-maldini': 58,
-    'roberto-carlos': 53,
-    'cafu': 56,
-    'kaka': 44,
-    'andres-iniesta': 42,
-    'xavi': 46,
-    'andrea-pirlo': 47,
-    'david-beckham': 51,
-    'steven-gerrard': 46,
-    'frank-lampard': 48,
-    'paul-scholes': 51,
-    'patrick-vieira': 50,
-    'dennis-bergkamp': 57,
-    'alan-shearer': 56,
-    'wayne-rooney': 41,
-    'didier-drogba': 48,
-    'samuel-etoo': 45,
-    'iker-casillas': 45,
-    'gianluigi-buffon': 48,
-    'peter-schmeichel': 62,
-    'oliver-kahn': 57,
-    'carles-puyol': 48,
-    'alessandro-nesta': 50,
-    'fabio-cannavaro': 53,
-    'rio-ferdinand': 48,
-    'sergio-aguero': 38,
-    'raul': 49,
-    'luis-figo': 54,
-    'rivaldo': 54,
-    'zlatan-ibrahimovic': 45,
-    'gareth-bale': 37,
-    'ruud-van-nistelrooy': 50,
-    'andriy-shevchenko': 50,
-    'clarence-seedorf': 50,
-    'ruud-gullit': 64,
-    'marco-van-basten': 62,
-    'lothar-matthaus': 65,
-    'romario': 60,
-    'gabriel-batistuta': 57,
-    'javier-zanetti': 53,
-    'hristo-stoichkov': 60,
-    'george-weah': 60,
-    'franco-baresi': 66,
-    'michel-platini': 71,
-    'ronald-koeman': 63,
-    'eric-cantona': 60,
-    'michael-owen': 46,
-    'fernando-torres': 42,
-    'mesut-ozil': 38,
-    'eden-hazard': 35,
-}
-
-# 1. Legends first (without achievements or clubAbbr, with verified ages)
+# 1. Legends first
 for legend in LEGENDS:
     if legend['id'] not in seen:
         seen.add(legend['id'])
         clean_leg = dict(legend)
         clean_leg.pop('achievements', None)
         clean_leg.pop('clubAbbr', None)
-        if clean_leg['id'] in LEGEND_EXACT_AGES:
-            clean_leg['age'] = LEGEND_EXACT_AGES[clean_leg['id']]
-        if clean_leg.get('league') == 'Top League':
-            clean_leg['league'] = 'Other League'
+        
+        # Apply Approach B (literal final senior club)
+        lid = clean_leg['id']
+        if lid in APPROACH_B_LEGENDS:
+            last_club, last_league = APPROACH_B_LEGENDS[lid]
+            clean_leg['currentClub'] = last_club
+            clean_leg['league'] = last_league
+            
+            # Reconstruct previousClubs excluding currentClub
+            orig_prev = list(clean_leg.get('previousClubs', []))
+            clean_prev = []
+            for c in orig_prev:
+                c_clean = clean_club_name(c)
+                if c_clean and c_clean.lower() != last_club.lower():
+                    if not clean_prev or clean_prev[-1] != c_clean:
+                        clean_prev.append(c_clean)
+            clean_leg['previousClubs'] = clean_prev
+            
+        if lid in LEGEND_METADATA:
+            clean_leg['age'] = LEGEND_METADATA[lid][0]
+            clean_leg['birthYear'] = LEGEND_METADATA[lid][1]
+            
+        # Deceased icons carry isActive: false
+        if lid in DECEASED_ICONS:
+            clean_leg['isActive'] = False
+        else:
+            clean_leg['isActive'] = True
+            
+        # Ensure displayName is always in alternativeNames
+        disp = clean_leg['displayName']
+        alts = list(clean_leg.get('alternativeNames', []))
+        if disp not in alts:
+            alts.insert(0, disp)
+        clean_leg['alternativeNames'] = alts
+        
         final_players.append(clean_leg)
 
 # 2. Add modern players sorted by peak market value
