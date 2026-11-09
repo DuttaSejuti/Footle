@@ -36,7 +36,6 @@ export default function AdminPage() {
     flagEmoji: '⚽',
     league: 'Premier League',
     currentClub: '',
-    clubAbbr: '',
     position: 'Forward',
     positionAbbr: 'FWD',
     age: 26,
@@ -87,7 +86,6 @@ export default function AdminPage() {
       flagEmoji: '⚽',
       league: 'Premier League',
       currentClub: '',
-      clubAbbr: '',
       position: 'Forward',
       positionAbbr: 'FWD',
       age: 26,
@@ -109,11 +107,6 @@ export default function AdminPage() {
         .replace(/[^a-z0-9]/g, '-')
         .replace(/-+/g, '-');
 
-    const clubAbbrCalc =
-      formData.clubAbbr?.trim() ||
-      formData.currentClub?.substring(0, 3).toUpperCase() ||
-      'FC';
-
     let posAbbrCalc: 'GK' | 'DEF' | 'MID' | 'FWD' = 'FWD';
     if (formData.position === 'Goalkeeper') posAbbrCalc = 'GK';
     else if (formData.position === 'Defender') posAbbrCalc = 'DEF';
@@ -128,14 +121,12 @@ export default function AdminPage() {
         .split(',')
         .map((s) => s.trim())
         .filter(Boolean),
-      clubAbbr: clubAbbrCalc,
       positionAbbr: posAbbrCalc,
       isRetired: false,
       previousClubs: prevClubsInput
         .split(',')
         .map((s) => s.trim())
         .filter(Boolean),
-      achievements: [],
       difficulty: 'Easy',
       isActive: formData.isActive ?? true,
     };
@@ -437,7 +428,7 @@ export default function AdminPage() {
           </div>
 
           {/* 3. Club, League & Age */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="sm:col-span-2">
               <label className="text-xs text-emerald-200 font-bold block mb-1">Current Club *</label>
               <input
@@ -447,17 +438,6 @@ export default function AdminPage() {
                 onChange={(e) => setFormData({ ...formData, currentClub: e.target.value })}
                 placeholder="e.g. Manchester City"
                 className="w-full px-3 py-2 bg-[#081f10] border-2 border-[#297a49] rounded-xl text-sm text-white font-bold focus:outline-none focus:border-white"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-emerald-200 font-bold block mb-1">Club Abbr (3-4 letters)</label>
-              <input
-                type="text"
-                value={formData.clubAbbr || ''}
-                onChange={(e) => setFormData({ ...formData, clubAbbr: e.target.value.toUpperCase() })}
-                placeholder="MCI"
-                maxLength={4}
-                className="w-full px-3 py-2 bg-[#081f10] border-2 border-[#297a49] rounded-xl text-sm text-white font-mono font-bold text-center"
               />
             </div>
             <div>
@@ -564,7 +544,7 @@ export default function AdminPage() {
                   </td>
                   <td className="p-3 font-mono font-bold">{p.countryCode || p.nationality}</td>
                   <td className="p-3 font-bold text-white">{p.league}</td>
-                  <td className="p-3 font-mono font-bold">{p.clubAbbr || p.currentClub}</td>
+                  <td className="p-3 font-bold text-white">{p.currentClub}</td>
                   <td className="p-3">
                     <span className="px-2 py-0.5 rounded bg-[#165330] border border-emerald-400/60 text-white font-mono font-bold">
                       {p.positionAbbr || p.position.substring(0, 3).toUpperCase()}

@@ -10,11 +10,9 @@ export interface Footballer {
   position: 'Goalkeeper' | 'Defender' | 'Midfielder' | 'Forward';
   positionAbbr: 'GK' | 'DEF' | 'MID' | 'FWD';
   currentClub: string; // or last club if retired
-  clubAbbr: string; // e.g. "MCI", "RMA", "BAR", "LIV", "BAY", "MIA"
   age: number;
   isRetired: boolean;
   previousClubs: string[]; // Chronological previous clubs
-  achievements: string[]; // Major trophies / milestones
   imageUrl?: string;
   imageAttribution?: string;
   imageLicense?: string;
@@ -44,7 +42,6 @@ export interface GuessComparison {
   };
   club: {
     value: string;
-    abbr: string;
     status: MatchStatus;
   };
   position: {

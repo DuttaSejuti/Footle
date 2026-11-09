@@ -333,7 +333,6 @@ export function compareFootballers(guessed: Footballer, target: Footballer): Gue
     },
     club: {
       value: guessed.currentClub,
-      abbr: guessed.clubAbbr || guessed.currentClub.substring(0, 3).toUpperCase(),
       status: clubStatus,
     },
     position: {

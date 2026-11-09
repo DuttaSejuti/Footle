@@ -30,8 +30,7 @@ export async function GET(request: Request) {
     };
   }
   if (cluesRequested >= 4) cluesData.clue4PreviousClubs = player.previousClubs;
-  if (cluesRequested >= 5) cluesData.clue5Achievements = player.achievements;
-  if (cluesRequested >= 6) {
+  if (cluesRequested >= 5) {
     cluesData.clue6Photo = {
       imageUrl: player.imageUrl || null,
       imageAttribution: player.imageAttribution || null,

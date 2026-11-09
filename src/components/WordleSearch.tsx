@@ -12,7 +12,6 @@ export interface PlayerOption {
   position: string;
   positionAbbr: string;
   currentClub: string;
-  clubAbbr: string;
   league: string;
   age: number;
   imageUrl?: string;
