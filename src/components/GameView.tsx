@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { WordleSearch, PlayerOption } from '@/components/WordleSearch';
 import { WordleGrid } from '@/components/WordleGrid';
 import { ResultsModal } from '@/components/ResultsModal';
+import { RequestPlayerModal } from '@/components/RequestPlayerModal';
 import { HomeSplash } from '@/components/HomeSplash';
 import { Footballer, GuessComparison } from '@/types/footballer';
 import { getUtcTodayDateString } from '@/lib/game-logic';
@@ -23,6 +24,7 @@ export default function GameView() {
   const [mysteryPlayer, setMysteryPlayer] = useState<Footballer | undefined>();
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [showResultsModal, setShowResultsModal] = useState<boolean>(false);
+  const [showRequestPlayerModal, setShowRequestPlayerModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [isShaking, setIsShaking] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<string>('08:42:12');
@@ -404,6 +406,12 @@ export default function GameView() {
             <Link href="/privacy" className="hover:text-white underline-offset-4 hover:underline">
               Privacy Policy
             </Link>
+            <button
+              onClick={() => setShowRequestPlayerModal(true)}
+              className="text-emerald-300 hover:text-white hover:underline cursor-pointer flex items-center gap-1"
+            >
+              Request a Player
+            </button>
           </div>
           <span>
             Next fixture in <strong className="text-yellow-300 tracking-widest font-black text-sm">{countdown}</strong>
@@ -428,6 +436,12 @@ export default function GameView() {
           comparisons={comparisons}
         />
       )}
+
+      {/* Footer Request Player Modal */}
+      <RequestPlayerModal
+        isOpen={showRequestPlayerModal}
+        onClose={() => setShowRequestPlayerModal(false)}
+      />
     </div>
   );
 }
