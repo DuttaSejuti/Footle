@@ -322,10 +322,11 @@ export default function GameView() {
             onClick={() => setCurrentView('home')}
             className="flex flex-col items-center select-none text-center cursor-pointer"
           >
-            <h1 className="font-headline text-2xl tracking-[0.15em] font-black uppercase text-white flex items-center justify-center drop-shadow-md">
+            <h1 className="font-headline text-2xl tracking-[0.14em] font-black uppercase text-white flex items-center justify-center drop-shadow-md">
               <span>F</span>
-              <span className="text-lg mx-0.5 inline-flex items-center gap-0.5 select-none -translate-y-0.5">
-                ⚽⚽
+              <span className="inline-flex items-center gap-[0.12em] mx-[0.08em] select-none">
+                <span className="text-[0.74em] leading-none translate-y-[0.05em]">⚽</span>
+                <span className="text-[0.74em] leading-none translate-y-[0.05em]">⚽</span>
               </span>
               <span>TBLE</span>
             </h1>

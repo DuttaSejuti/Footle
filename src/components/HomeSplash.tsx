@@ -35,10 +35,11 @@ export function HomeSplash({
 
         {/* Hero Branding */}
         <div className="text-center select-none">
-          <h1 className="font-headline text-4xl sm:text-5xl font-black uppercase tracking-[0.18em] text-white flex items-center justify-center drop-shadow-lg">
+          <h1 className="font-headline text-4xl sm:text-5xl font-black uppercase tracking-[0.16em] text-white flex items-center justify-center drop-shadow-lg">
             <span>F</span>
-            <span className="text-3xl sm:text-4xl mx-0.5 inline-flex items-center gap-0.5 select-none -translate-y-0.5">
-              ⚽⚽
+            <span className="inline-flex items-center gap-[0.14em] mx-[0.1em] select-none">
+              <span className="text-[0.74em] leading-none translate-y-[0.05em]">⚽</span>
+              <span className="text-[0.74em] leading-none translate-y-[0.05em]">⚽</span>
             </span>
             <span>TBLE</span>
           </h1>
