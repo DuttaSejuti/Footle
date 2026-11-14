@@ -65,7 +65,7 @@ npm start
 ## Admin Portal & Player Scheduling
 
 Access the Admin Portal at `/admin`.
-- **Default password:** `footble-admin-pass` (can be configured via `ADMIN_SECRET` environment variable).
+- **Authentication:** Configured via the `ADMIN_SECRET` environment variable.
 - **Features:**
   - View analytics (daily visitors, games completed, average scores, practice vs daily splits, share clicks).
   - Add and edit footballers.

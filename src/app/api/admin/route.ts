@@ -2,9 +2,10 @@ import { NextResponse } from 'next/server';
 import { getPlayers, savePlayers, getSchedule, saveSchedule } from '@/lib/server-storage';
 import { Footballer } from '@/types/footballer';
 
-const ADMIN_SECRET = process.env.ADMIN_SECRET || 'footble-admin-pass';
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
 
 function checkAuth(req: Request) {
+  if (!ADMIN_SECRET) return false;
   const auth = req.headers.get('authorization') || '';
   const token = auth.replace('Bearer ', '').trim();
   const querySecret = new URL(req.url).searchParams.get('secret');
