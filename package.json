@@ -9,8 +9,16 @@
     "lint": "next lint",
     "test": "node scripts/test-core.js"
   },
-  "keywords": ["footble", "football", "wordle", "trivia", "quiz"],
+  "keywords": [
+    "footble",
+    "football",
+    "wordle",
+    "trivia",
+    "quiz"
+  ],
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.1.0",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.70.0",
     "next": "^16.4.5",
