@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getPlayers, savePlayers, getSchedule, saveSchedule } from '@/lib/server-storage';
 import { Footballer } from '@/types/footballer';
 
-const ADMIN_SECRET = process.env.ADMIN_SECRET || 'footle-admin-pass';
+const ADMIN_SECRET = process.env.ADMIN_SECRET || 'footble-admin-pass';
 
 function checkAuth(req: Request) {
   const auth = req.headers.get('authorization') || '';

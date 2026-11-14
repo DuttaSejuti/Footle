@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { ArrowLeft, Check, HelpCircle } from 'lucide-react';
 
 export const metadata = {
-  title: "How to Play — FOOTYDLE",
-  description: "Learn how to play FOOTYDLE: matchday rules, tile feedback, and clues.",
+  title: "How to Play — FOOTBLE",
+  description: "Learn how to play FOOTBLE: matchday rules, tile feedback, and clues.",
 };
 
 export default function HowToPlay() {
@@ -22,7 +22,7 @@ export default function HowToPlay() {
       </div>
 
       <p className="text-emerald-100 text-sm leading-relaxed mb-6 font-medium">
-        <strong>FOOTYDLE</strong> is a daily football player guessing game inspired by Wordle and Poeltl. You have <strong>6 substitution attempts</strong> to identify the mystery footballer.
+        <strong>FOOTBLE</strong> is a daily football player guessing game inspired by Wordle and Poeltl. You have <strong>6 substitution attempts</strong> to identify the mystery footballer.
       </p>
 
       {/* Wordle Tile Matching Rules */}

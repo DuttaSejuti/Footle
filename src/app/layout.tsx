@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: "FOOTYDLE — Daily Football Player Guessing Game",
+  title: "FOOTBLE — Daily Football Player Guessing Game",
   description: "Test your football knowledge on the pitch! Guess the mystery footballer in six tactical attempts with Wordle-style matchday feedback.",
-  keywords: ["footydle", "football wordle", "poeltl soccer", "football quiz", "mystery player", "who is the footballer"],
+  keywords: ["footble", "football wordle", "poeltl soccer", "football quiz", "mystery player", "who is the footballer"],
   openGraph: {
-    title: "FOOTYDLE — Daily Mystery Footballer",
+    title: "FOOTBLE — Daily Mystery Footballer",
     description: "Can you guess today's mystery footballer using 6 tactical attempts? Play free on mobile & web.",
     type: "website",
-    siteName: "FOOTYDLE",
+    siteName: "FOOTBLE",
   },
 };
 

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: ['/', '/how-to-play'],
       disallow: ['/admin', '/api/'],
     },
-    sitemap: 'https://whosthefootballer.app/sitemap.xml',
+    sitemap: 'https://footble.vercel.app/sitemap.xml',
   };
 }

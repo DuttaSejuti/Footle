@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { GuessComparison } from '@/types/footballer';
-import { Check } from 'lucide-react';
 
 interface WordleGridProps {
   comparisons: GuessComparison[];
@@ -32,9 +31,7 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
           return (
             <div
               key={idx}
-              className={`grid grid-cols-6 gap-2 sm:gap-3 items-stretch h-16 sm:h-20 animate-clue-enter ${
-                isWin ? 'border-2 border-white rounded shadow-lg' : ''
-              }`}
+              className="grid grid-cols-6 gap-2 sm:gap-3 items-stretch h-16 sm:h-20 animate-clue-enter"
             >
               {/* Player Cell */}
               <div
@@ -42,17 +39,14 @@ export function WordleGrid({ comparisons, maxAttempts = 6 }: WordleGridProps) {
                   isWin ? 'border-emerald-400 bg-[#0d3b1e]' : 'border-[#297a49]'
                 }`}
               >
-                <div className="flex items-center gap-1.5 min-w-0 w-full">
-                  {isWin && <Check className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-300 shrink-0 stroke-[3]" />}
-                  <span
-                    title={comp.player.displayName}
-                    className={`font-headline font-black text-xs sm:text-base line-clamp-2 leading-snug break-words ${
-                      isWin ? 'text-emerald-200' : 'text-white'
-                    }`}
-                  >
-                    {comp.player.displayName}
-                  </span>
-                </div>
+                <span
+                  title={comp.player.displayName}
+                  className={`font-headline font-black text-xs sm:text-base line-clamp-2 leading-snug break-words ${
+                    isWin ? 'text-emerald-300' : 'text-white'
+                  }`}
+                >
+                  {comp.player.displayName}
+                </span>
               </div>
 
               {/* COUNTRY */}

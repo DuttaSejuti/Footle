@@ -70,7 +70,7 @@ export interface GuessResult {
 export interface UserGameState {
   date: string;
   mode: 'daily' | 'practice';
-  cluesRevealed: number; // 1 to 6
+  cluesRevealed: number; // 1 to 5
   guesses: string[]; // names guessed
   comparisons: GuessComparison[]; // Wordle comparison rows
   isGameOver: boolean;

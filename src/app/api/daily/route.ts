@@ -31,7 +31,7 @@ export async function GET(request: Request) {
   }
   if (cluesRequested >= 4) cluesData.clue4PreviousClubs = player.previousClubs;
   if (cluesRequested >= 5) {
-    cluesData.clue6Photo = {
+    cluesData.clue5Photo = {
       imageUrl: player.imageUrl || null,
       imageAttribution: player.imageAttribution || null,
       imageLicense: player.imageLicense || null,
@@ -84,15 +84,21 @@ export async function POST(request: Request) {
 
     const won = guessedPlayer ? isCorrectGuess(guessedPlayer.displayName, targetPlayer) : isCorrectGuess(guess, targetPlayer);
     const score = calculateScore(cluesUsed || 1, won);
+    const isLastAttempt = (cluesUsed || 1) >= 6;
+    const isGameOver = won || isLastAttempt;
 
     return NextResponse.json({
       isCorrect: won,
       score: score,
       cluesUsed: cluesUsed || 1,
-      isGameOver: won,
+      isGameOver: isGameOver,
       comparison,
-      mysteryPlayer: won ? targetPlayer : undefined,
-      message: won ? `Brilliant! That is ${targetPlayer.displayName}!` : 'Keep going! Check the tile matches below.',
+      mysteryPlayer: isGameOver ? targetPlayer : undefined,
+      message: won
+        ? `Brilliant! That is ${targetPlayer.displayName}!`
+        : isLastAttempt
+        ? `Match Over! The mystery footballer was ${targetPlayer.displayName}.`
+        : 'Keep going! Check the tile matches below.',
     });
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'Invalid request' }, { status: 400 });

@@ -1,7 +1,7 @@
 {
-  "name": "footle",
+  "name": "footble",
   "version": "1.0.0",
-  "description": "Who's the Footballer? Daily Football Player Guessing Game",
+  "description": "Footble — Daily Football Player Guessing Game",
   "scripts": {
     "dev": "next dev",
     "build": "next build --webpack",
@@ -9,7 +9,7 @@
     "lint": "next lint",
     "test": "node scripts/test-core.js"
   },
-  "keywords": ["football", "wordle", "trivia", "quiz"],
+  "keywords": ["footble", "football", "wordle", "trivia", "quiz"],
   "dependencies": {
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.70.0",

@@ -60,7 +60,7 @@ export default function AdminPage() {
         const aData = await aRes.json();
         setAnalytics(aData);
       } else {
-        setMessage('Invalid admin password. Default in local dev: footle-admin-pass');
+        setMessage('Invalid admin password. Default in local dev: footble-admin-pass');
       }
     } catch (err: any) {
       setMessage(err.message);
@@ -222,7 +222,7 @@ export default function AdminPage() {
           <form onSubmit={handleLogin} className="space-y-4">
             <input
               type="password"
-              placeholder="Admin password (default: footle-admin-pass)"
+              placeholder="Admin password (default: footble-admin-pass)"
               value={secret}
               onChange={(e) => setSecret(e.target.value)}
               className="w-full px-4 py-3 bg-[#081f10] border-2 border-[#297a49] rounded-xl text-white text-sm focus:outline-none focus:border-white font-mono"
@@ -255,7 +255,7 @@ export default function AdminPage() {
           </Link>
           <h1 className="text-2xl font-headline font-black text-white flex items-center gap-2">
             <ShieldCheck className="w-7 h-7 text-emerald-300" />
-            <span>Footle Admin Manager</span>
+            <span>Footble Admin Manager</span>
           </h1>
         </div>
         <button

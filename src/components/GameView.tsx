@@ -5,11 +5,15 @@ import Link from 'next/link';
 import { WordleSearch, PlayerOption } from '@/components/WordleSearch';
 import { WordleGrid } from '@/components/WordleGrid';
 import { ResultsModal } from '@/components/ResultsModal';
+import { HomeSplash } from '@/components/HomeSplash';
 import { Footballer, GuessComparison } from '@/types/footballer';
 import { getUtcTodayDateString } from '@/lib/game-logic';
-import { HelpCircle } from 'lucide-react';
+import { getUserStats, recordGameResult, UserStats, DEFAULT_STATS } from '@/lib/user-stats';
+import { HelpCircle, Home, Flame } from 'lucide-react';
 
 export default function GameView() {
+  const [currentView, setCurrentView] = useState<'home' | 'pitch'>('home');
+  const [userStats, setUserStats] = useState<UserStats>(DEFAULT_STATS);
   const [currentDateStr, setCurrentDateStr] = useState<string>('');
   const [cluesRevealed, setCluesRevealed] = useState<number>(1);
   const [comparisons, setComparisons] = useState<GuessComparison[]>([]);
@@ -55,8 +59,12 @@ export default function GameView() {
     setLoading(true);
     setFeedbackMessage(null);
 
-    const storageKey = `footle_pitch_${date}`;
-    const saved = localStorage.getItem(storageKey);
+    const stats = getUserStats();
+    setUserStats(stats);
+
+    const storageKey = `footble_pitch_${date}`;
+    const legacyKey = `footle_pitch_${date}`;
+    const saved = localStorage.getItem(storageKey) || localStorage.getItem(legacyKey);
 
     let savedClues = 1;
     let savedComparisons: GuessComparison[] = [];
@@ -99,7 +107,7 @@ export default function GameView() {
     score: number,
     mystery?: Footballer
   ) => {
-    const storageKey = `footle_pitch_${currentDateStr}`;
+    const storageKey = `footble_pitch_${currentDateStr}`;
     localStorage.setItem(
       storageKey,
       JSON.stringify({
@@ -131,6 +139,9 @@ export default function GameView() {
       setMysteryPlayer(data.mysteryPlayer);
       setShowResultsModal(true);
       setFeedbackMessage(data.message);
+
+      const updatedStats = recordGameResult(userStats, currentDateStr, false);
+      setUserStats(updatedStats);
 
       persistDailyState(cluesRevealed, comparisons, true, false, 0, data.mysteryPlayer);
     } catch (err) {
@@ -176,6 +187,9 @@ export default function GameView() {
           setShowResultsModal(true);
           setFeedbackMessage(data.message);
 
+          const updatedStats = recordGameResult(userStats, currentDateStr, true);
+          setUserStats(updatedStats);
+
           persistDailyState(cluesRevealed, nextComparisons, true, true, data.score, data.mysteryPlayer);
 
           fetch('/api/analytics', {
@@ -187,22 +201,88 @@ export default function GameView() {
               dailyCount: 1,
             }),
           }).catch(() => {});
-        } else {
-          if (nextComparisons.length >= 6) {
-            handleGiveUp();
-          } else {
-            setFeedbackMessage(data.message);
-            setIsShaking(true);
-            setTimeout(() => setIsShaking(false), 350);
+        } else if (nextComparisons.length >= 6 || data.isGameOver) {
+          setIsGameOver(true);
+          setIsWon(false);
+          setFinalScore(0);
+          setMysteryPlayer(data.mysteryPlayer);
+          setShowResultsModal(true);
+          setFeedbackMessage(data.message);
 
-            persistDailyState(cluesRevealed, nextComparisons, false, false, 0);
-          }
+          const updatedStats = recordGameResult(userStats, currentDateStr, false);
+          setUserStats(updatedStats);
+
+          persistDailyState(cluesRevealed, nextComparisons, true, false, 0, data.mysteryPlayer);
+
+          fetch('/api/analytics', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              gamesCompleted: 1,
+              totalScore: 0,
+              dailyCount: 1,
+            }),
+          }).catch(() => {});
+        } else {
+          setFeedbackMessage(data.message);
+          setIsShaking(true);
+          setTimeout(() => setIsShaking(false), 350);
+
+          persistDailyState(cluesRevealed, nextComparisons, false, false, 0);
         }
       }
     } catch (err) {
       console.error('Error submitting guess:', err);
     }
   };
+
+  if (currentView === 'home') {
+    const gameState = isGameOver
+      ? 'completed'
+      : comparisons.length > 0
+      ? 'in_progress'
+      : 'new';
+
+    return (
+      <div className="w-full min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+        {/* Crisp Pitch Chalk Markings Overlay */}
+        <div className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center opacity-25 overflow-hidden">
+          <div className="w-[600px] h-[600px] rounded-full border-4 border-white absolute" />
+          <div className="w-4 h-4 rounded-full bg-white absolute" />
+          <div className="w-full h-[4px] bg-white absolute top-1/2 -translate-y-1/2" />
+          <div className="w-[340px] h-[170px] border-4 border-t-0 border-white rounded-b-full absolute -top-10 opacity-50" />
+          <div className="w-[340px] h-[170px] border-4 border-b-0 border-white rounded-t-full absolute -bottom-10 opacity-50" />
+        </div>
+
+        <HomeSplash
+          stats={userStats}
+          gameState={gameState}
+          attemptsCount={comparisons.length}
+          currentDateStr={currentDateStr}
+          countdown={countdown}
+          onStartGame={() => setCurrentView('pitch')}
+          onViewSummary={() => setShowResultsModal(true)}
+        />
+
+        {mysteryPlayer && (
+          <ResultsModal
+            isOpen={showResultsModal}
+            onClose={() => setShowResultsModal(false)}
+            onReviewPitch={() => {
+              setShowResultsModal(false);
+              setCurrentView('pitch');
+            }}
+            mysteryPlayer={mysteryPlayer}
+            cluesUsed={comparisons.length}
+            isWon={isWon}
+            dateStr={currentDateStr}
+            userStats={userStats}
+            comparisons={comparisons}
+          />
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen flex flex-col justify-between relative overflow-x-hidden">
@@ -220,6 +300,14 @@ export default function GameView() {
         <div className="max-w-[860px] mx-auto px-4 h-16 flex items-center justify-between">
           {/* Left Match Utility Icons */}
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrentView('home')}
+              aria-label="Return to Home & Streaks"
+              title="Return to Home & Streaks"
+              className="w-10 h-10 rounded-lg border-2 border-emerald-400/80 bg-[#144f2c] flex items-center justify-center text-white hover:bg-emerald-600 transition-colors shadow-sm"
+            >
+              <Home className="w-5 h-5 stroke-[2.5]" />
+            </button>
             <Link
               href="/how-to-play"
               aria-label="Help & Pitch Rules"
@@ -230,17 +318,32 @@ export default function GameView() {
           </div>
 
           {/* Center Wordle Title with Chalk Aesthetic */}
-          <div className="flex flex-col items-center select-none">
-            <h1 className="font-headline text-2xl tracking-[0.2em] font-black uppercase text-white flex items-center gap-1 drop-shadow-md">
-              FOOTY<span className="text-emerald-300 font-black border-b-4 border-emerald-400 pb-0.5">DLE</span>
+          <button
+            onClick={() => setCurrentView('home')}
+            className="flex flex-col items-center select-none text-center cursor-pointer"
+          >
+            <h1 className="font-headline text-2xl tracking-[0.15em] font-black uppercase text-white flex items-center justify-center drop-shadow-md">
+              <span>F</span>
+              <span className="text-lg mx-0.5 inline-flex items-center gap-0.5 select-none -translate-y-0.5">
+                ⚽⚽
+              </span>
+              <span>TBLE</span>
             </h1>
             <span className="font-mono text-xs text-emerald-100 tracking-widest uppercase font-extrabold drop-shadow">
               Daily Matchday • {currentDateStr}
             </span>
-          </div>
+          </button>
 
           {/* Right Stats & Tactics Counter */}
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrentView('home')}
+              title="Career Streaks & Stats"
+              className="hidden sm:flex items-center gap-1 bg-[#144f2c] border-2 border-emerald-400 px-2.5 py-1 rounded-lg text-amber-300 text-xs font-mono font-bold shadow-sm hover:bg-emerald-600 transition-colors"
+            >
+              <Flame className="w-3.5 h-3.5 fill-amber-300" />
+              <span>{userStats.currentStreak}</span>
+            </button>
             <div className="bg-[#0b2917] border-2 border-emerald-400 px-3.5 py-1 rounded-lg flex items-center gap-1.5 shadow-sm">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
               <span className="font-mono text-sm font-black text-white tracking-wider">
@@ -283,15 +386,26 @@ export default function GameView() {
         )}
       </main>
 
-      {/* High-Contrast Touchline Footer with Countdown */}
-      <footer className="w-full border-t-2 border-white/20 py-3.5 bg-[#0c2f1a]/95 z-20 shadow-inner">
-        <div className="max-w-[860px] mx-auto px-4 flex items-center justify-between text-xs text-emerald-100 font-mono font-bold">
+      {/* High-Contrast Touchline Footer with Countdown & Site Navigation */}
+      <footer className="w-full border-t-2 border-white/20 py-4 bg-[#0c2f1a]/95 z-20 shadow-inner">
+        <div className="max-w-[860px] mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-emerald-100 font-mono font-bold">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-            <span className="text-white font-extrabold tracking-wide">FOOTYDLE • DAILY FIXTURE</span>
+            <span className="text-white font-extrabold tracking-wide">FOOTBLE • DAILY FIXTURE</span>
+          </div>
+          <div className="flex items-center gap-4 text-[11px] font-sans font-semibold text-emerald-200">
+            <Link href="/how-to-play" className="hover:text-white underline-offset-4 hover:underline">
+              Rules
+            </Link>
+            <Link href="/about" className="hover:text-white underline-offset-4 hover:underline">
+              About
+            </Link>
+            <Link href="/privacy" className="hover:text-white underline-offset-4 hover:underline">
+              Privacy Policy
+            </Link>
           </div>
           <span>
-            Next mystery fixture in <strong className="text-yellow-300 tracking-widest font-black text-sm">{countdown}</strong>
+            Next fixture in <strong className="text-yellow-300 tracking-widest font-black text-sm">{countdown}</strong>
           </span>
         </div>
       </footer>
@@ -301,11 +415,16 @@ export default function GameView() {
         <ResultsModal
           isOpen={showResultsModal}
           onClose={() => setShowResultsModal(false)}
+          onReviewPitch={() => {
+            setShowResultsModal(false);
+            setCurrentView('pitch');
+          }}
           mysteryPlayer={mysteryPlayer}
-          score={finalScore}
           cluesUsed={comparisons.length}
           isWon={isWon}
           dateStr={currentDateStr}
+          userStats={userStats}
+          comparisons={comparisons}
         />
       )}
     </div>

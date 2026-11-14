@@ -252,7 +252,7 @@ export function compareFootballers(guessed: Footballer, target: Footballer): Gue
 
   // 3. Club:
   // Exact: Current club match
-  // Partial: Career overlap (target played for guessed club, OR guessed played for target's current/former club, OR shared previous club)
+  // Partial: Mystery footballer previously played for the guessed player's club
   const normGuessedClub = normalizeString(guessed.currentClub);
   const normTargetClub = normalizeString(target.currentClub);
   let clubStatus: MatchStatus = 'wrong';
@@ -260,19 +260,22 @@ export function compareFootballers(guessed: Footballer, target: Footballer): Gue
   if (normGuessedClub === normTargetClub) {
     clubStatus = 'correct';
   } else {
-    const targetAllClubs = [normTargetClub, ...(target.previousClubs || []).map(normalizeString)];
-    const guessedAllClubs = [normGuessedClub, ...(guessed.previousClubs || []).map(normalizeString)];
-
-    const hasCareerOverlap = targetAllClubs.some((tc) =>
-      guessedAllClubs.some(
-        (gc) =>
-          tc.length >= 3 &&
-          gc.length >= 3 &&
-          (tc.includes(gc) || gc.includes(tc))
-      )
+    // Yellow only if the mystery player previously played for the guessed player's club
+    const targetPrevClubs = (target.previousClubs || []).map(normalizeString);
+    const playedForGuessedClub = targetPrevClubs.some(
+      (tc) =>
+        tc.length >= 3 &&
+        normGuessedClub.length >= 3 &&
+        (tc === normGuessedClub || tc.includes(normGuessedClub) || normGuessedClub.includes(tc)) &&
+        !((tc.includes('city') && normGuessedClub.includes('united')) ||
+          (tc.includes('united') && normGuessedClub.includes('city')) ||
+          (tc.includes('ac milan') && normGuessedClub.includes('inter')) ||
+          (tc.includes('inter') && normGuessedClub.includes('ac milan')) ||
+          (tc.includes('real madrid') && normGuessedClub.includes('atletico')) ||
+          (tc.includes('atletico') && normGuessedClub.includes('real madrid')))
     );
 
-    if (hasCareerOverlap) {
+    if (playedForGuessedClub) {
       clubStatus = 'partial';
     }
   }

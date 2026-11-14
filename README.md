@@ -1,7 +1,7 @@
-# Who's the Footballer? ⚽
+# Footble ⚽
 
 A mobile-first daily football player guessing game inspired by Wordle and football trivia.
-Players deduce mystery footballers across six progressive clues.
+Players deduce mystery footballers across five progressive clues in six attempts.
 
 ## Tech Stack
 - **Framework:** Next.js 16 (App Router)
@@ -9,19 +9,19 @@ Players deduce mystery footballers across six progressive clues.
 - **Styling:** Tailwind CSS (Dark navy pitch theme `#0b1319` with vibrant grass accent `#10b981`)
 - **Animations:** Custom CSS smooth reveal animations, pulse indicators, and `canvas-confetti` celebrations
 - **Icons:** `lucide-react`
-- **Data Persistence:** Local JSON store (`data/players.json`, `data/schedule.json`, `data/analytics.json`) with client-side localStorage fallback for anonymous user daily streak resilience.
+- **Data Persistence:** Local JSON store (`src/data/footballers.json`, `data/schedule.json`, `data/analytics.json`) with client-side localStorage fallback for anonymous user daily streak resilience.
 
 ---
 
 ## Core Gameplay & Scoring Rules
 
-Each match presents 1 mystery footballer and 6 progressive clues:
+Each match presents 1 mystery footballer and 5 progressive clues across 6 substitution attempts:
 1. **Clue 1: Nationality & Flag** (Guessing now = **6 points**)
 2. **Clue 2: Tactical Position** (Goalkeeper, Defender, Midfielder, Forward) (Guessing now = **5 points**)
 3. **Clue 3: Current / Last Club** (Active club, or last senior club if retired) (Guessing now = **4 points**)
-4. **Clue 4: Career History** (Chronological sequence of previous clubs) (Guessing now = **3 points**)
-5. **Clue 5: Major Achievements & Records** (Trophies, Ballon d'Ors, milestone feats) (Guessing now = **2 points**)
-6. **Clue 6: Progressive Photo Reveal** (Dynamic 6-stage blur filter down to clear silhouette, or verified Image-Free mode) (Guessing now = **1 point**)
+4. **Clue 4: Career History** (Chronological sequence of unique previous clubs) (Guessing now = **3 points**)
+5. **Clue 5: Photo Reveal** (Attributed portrait with source/license metadata, or Image-Free mode when no verified image exists) (Guessing now = **2 points**)
+6. **Final attempt** (No new clue, but a correct guess still scores **1 point**)
 
 - **Incorrect Guesses:** Do not deduct points, but do not automatically reveal the next clue.
 - **Give Up:** Reveals mystery footballer and awards 0 points.
@@ -65,11 +65,11 @@ npm start
 ## Admin Portal & Player Scheduling
 
 Access the Admin Portal at `/admin`.
-- **Default password:** `footle-admin-pass` (can be configured via `ADMIN_SECRET` environment variable).
+- **Default password:** `footble-admin-pass` (can be configured via `ADMIN_SECRET` environment variable).
 - **Features:**
   - View analytics (daily visitors, games completed, average scores, practice vs daily splits, share clicks).
   - Add and edit footballers.
-  - Preview all 6 clues for any footballer.
+  - Preview all 5 clues for any footballer.
   - Assign specific footballers to any calendar date in the daily schedule.
   - Toggle footballers between Active and Inactive.
   - Review image rights and licensing compliance before registering photo URLs.
@@ -79,8 +79,9 @@ Access the Admin Portal at `/admin`.
 ## Image Rights & Personality Policy
 
 To comply with licensing and image rights:
-- Images are strictly opt-in and support editorial/creative commons licensing (e.g. Unsplash, Wikimedia Commons).
-- If no verified license is available, the game falls back to **Image-Free Mode** automatically, showing country flags and verified trivia without missing gameplay function.
+- Photos are strictly sourced from **Wikimedia Commons** with verified Creative Commons (CC-BY, CC-BY-SA) or Public Domain licenses.
+- Every photo is paired with `imageAttribution: "Wikimedia Commons"`, `imageLicense: "Creative Commons / Public Domain"`, and `sourceUrl` linking directly to the Wikimedia / Wikipedia entry.
+- For players without a verified free license photo, the game falls back to **Image-Free Mode** automatically, displaying their country flag and verified trivia without missing gameplay functionality. No copyrighted agency or Transfermarkt images are used.
 
 ---
 
@@ -100,11 +101,13 @@ To migrate to a cloud database (e.g., PostgreSQL / Supabase / Prisma / MongoDB):
      nationality VARCHAR(64) NOT NULL,
      country_code VARCHAR(8) NOT NULL,
      flag_emoji VARCHAR(16) NOT NULL,
+     league VARCHAR(64),
      position VARCHAR(32) NOT NULL,
      current_club VARCHAR(64) NOT NULL,
+     age INTEGER,
+     birth_year INTEGER,
      is_retired BOOLEAN DEFAULT FALSE,
      previous_clubs TEXT[] NOT NULL DEFAULT '{}',
-     achievements TEXT[] NOT NULL DEFAULT '{}',
      image_url TEXT,
      image_attribution TEXT,
      image_license TEXT,
